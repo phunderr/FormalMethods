@@ -9,6 +9,9 @@ namespace FormalMethods
     public class Transition<T> : IComparable<Transition<T>> where T : IComparable
     {
         public readonly static char EPSILON = '$';
+        private State from;
+        private char s;
+        private State to;
 
         public T FromState { get; private set; }
         public T ToState { get; private set; }
@@ -25,6 +28,18 @@ namespace FormalMethods
             FromState = from;
             Symbol = s;
             ToState = to;
+        }
+
+        public Transition(State from, char s, State to)
+        {
+            this.from = from;
+            this.s = s;
+            this.to = to;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public override bool Equals(object obj)

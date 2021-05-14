@@ -36,7 +36,10 @@ namespace FormalMethods
 			letters = alphabet;
 			strings.Clear();
 			arrA = new string[i];
-			nBits(i);
+			for (int current = 0; current <= i; current++)
+			{
+				nBits(current);
+			}
 			return strings;
 		}
 	}

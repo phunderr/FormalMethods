@@ -6,7 +6,7 @@ namespace FormalMethods
 {
     public class Automata<T> where T : IComparable
     {
-        public HashSet<Transition<T>> Transitions { get; private set; }
+        public HashSet<Transition<T>> Transitions { get; set; }
 
         public SortedSet<T> States { get; private set; }
         public SortedSet<T> StartStates { get; private set; }
@@ -17,8 +17,14 @@ namespace FormalMethods
         protected Automata() : this(new SortedSet<char>())
         { }
 
-        protected Automata(char[] s) : this(new SortedSet<char>(s))
-        { }
+        public Automata(char[] s) : this(new SortedSet<char>(s))
+        {
+            foreach (char c in s) {
+                Symbols.Add(c);
+            }
+
+            
+        }
 
         protected Automata(SortedSet<char> symbols)
         {
@@ -78,6 +84,41 @@ namespace FormalMethods
             return toStates;
         }
 
-        
+        public List<String> geefTaalTotN(int n, string alphabet)
+        {
+            List<String> intaal = new List<string>();
+            List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+
+            foreach (string item in strings)
+            {
+                if (CheckBool(item))
+                {
+                    intaal.Add(item);
+                }
+            }
+
+            return intaal;
+        }
+
+
+        public List<String> geefNietInTaalTotN(int n, string alphabet)
+        {
+            List<String> nonAcceptedWords = new List<string>();
+            List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+
+            foreach (string item in strings)
+            {
+                if (!CheckBool(item))
+                {
+                    nonAcceptedWords.Add(item);
+                }
+            }
+
+            return nonAcceptedWords;
+        }
+
+
+
+
     }
 }
