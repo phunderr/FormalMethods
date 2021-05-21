@@ -84,38 +84,38 @@ namespace FormalMethods
             return toStates;
         }
 
-        public List<String> geefTaalTotN(int n, string alphabet)
-        {
-            List<String> intaal = new List<string>();
-            List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+        //public List<String> geefTaalTotN(int n, string alphabet)
+        //{
+        //    List<String> intaal = new List<string>();
+        //    List<string> strings = GenerateStrings.GenerateString(n, alphabet);
 
-            foreach (string item in strings)
-            {
-                if (CheckBool(item))
-                {
-                    intaal.Add(item);
-                }
-            }
+        //    foreach (string item in strings)
+        //    {
+        //        if (CheckBool(item))
+        //        {
+        //            intaal.Add(item);
+        //        }
+        //    }
 
-            return intaal;
-        }
+        //    return intaal;
+        //}
 
 
-        public List<String> geefNietInTaalTotN(int n, string alphabet)
-        {
-            List<String> nonAcceptedWords = new List<string>();
-            List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+        //public List<String> geefNietInTaalTotN(int n, string alphabet)
+        //{
+        //    List<String> nonAcceptedWords = new List<string>();
+        //    List<string> strings = GenerateStrings.GenerateString(n, alphabet);
 
-            foreach (string item in strings)
-            {
-                if (!CheckBool(item))
-                {
-                    nonAcceptedWords.Add(item);
-                }
-            }
+        //    foreach (string item in strings)
+        //    {
+        //        if (!CheckBool(item))
+        //        {
+        //            nonAcceptedWords.Add(item);
+        //        }
+        //    }
 
-            return nonAcceptedWords;
-        }
+        //    return nonAcceptedWords;
+        //}
 
 
 

@@ -72,7 +72,7 @@ namespace FormalMethods
 
             Grapher grapher = new Grapher();
             grapher.CreateGraph(automata, "test");
-            grapher.SaveToPDF();
+            
 
 
 

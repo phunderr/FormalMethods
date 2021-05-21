@@ -4,6 +4,7 @@ using DotNetGraph.Extensions;
 using DotNetGraph.Node;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -81,8 +82,15 @@ namespace FormalMethods
             var dot = graph.Compile();
             dot = dot.Insert(12 + name.Length, "rankdir=LR;");
             File.WriteAllText(name + ".dot", dot);
-            batfile.AppendLine($"dot -T svg {name}.dot -O {name}");
-            batfile.AppendLine($"start {name}.dot.svg");
+            using (Process process = new Process()) 
+            {
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.FileName =  ("dot");
+                process.StartInfo.Arguments = $"-T svg {name}.dot -O {name}";
+                process.Start();
+            }
+            //    batfile.AppendLine($"dot -T svg {name}.dot -O {name}");
+            //batfile.AppendLine($"start {name}.dot.svg");
         }
     }
 }
