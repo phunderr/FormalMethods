@@ -6,25 +6,30 @@ namespace FormalMethods
 {
     class Regex
     {
-        public string letters;
-        public string expression; 
+        public string groupOfLetters { get; set; }
+        public string remainder { get; set; }
+        public Affector affector { get; set; }
 
-        public void FillLetters(string letters)
+        public Regex()
         {
-            this.letters = letters; 
+      
+        }
+        public Regex(string groupOfLetters)
+        {
+            this.groupOfLetters = groupOfLetters; 
+        }
+      
+        public Regex(string groupOfLetters, Affector affector)
+        {
+            this.groupOfLetters = groupOfLetters;
+            this.affector = affector; 
         }
 
-        public void addLetter(string letter)
+        public Regex(string groupOfLetters, string remainder, Affector affector)
         {
-            this.letters += letter; 
+            this.groupOfLetters = groupOfLetters;
+            this.remainder = remainder;
+            this.affector = affector; 
         }
-
-        public void SetExpression(string expression)
-        {
-            this.expression = expression; 
-        }
-
-
-
-     }
+    }
 }
