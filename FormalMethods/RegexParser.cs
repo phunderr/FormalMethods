@@ -9,7 +9,7 @@ namespace FormalMethods
         public static void ParseRegex(string regex)
         {
             int startCapture = 0;
-            bool hasLast = false; 
+            bool letterCapture = false; 
             RegexData regexdata = new RegexData(); 
             foreach (char c in regex.ToCharArray())
             {
@@ -18,6 +18,7 @@ namespace FormalMethods
                     case '(':
                         startCapture ++; // caputere group started; 
                         regexdata.newCapture();
+                        letterCapture = false; 
                         break;
                     case ')': //Last
                         regexdata.newRegex(startCapture); 
@@ -28,20 +29,48 @@ namespace FormalMethods
                         }
                         break;
                     case '|': //or 
-                        Affector affector = Affector.or;      
-                        regexdata.fillAffector(affector); 
+                        if (letterCapture)
+                        {
+
+                        }
+                        else
+                        {
+                            Affector affector = Affector.or;
+                            regexdata.fillAffector(affector);
+                        }
                         break;
                     case '+': //+ 
-                        Affector affector2 = Affector.plus;
-                        regexdata.fillAffector(affector2);
+                        if (letterCapture)
+                        {
+
+                        }
+                        else
+                        {
+                            Affector affector2 = Affector.plus;
+                            regexdata.fillAffector(affector2);
+                        }
                         break;
                     case '*': //*
-                        Affector affector3 = Affector.star;
-                        regexdata.fillAffector(affector3);
+                        if (letterCapture)
+                        {
+
+                        }
+                        else
+                        {
+                            Affector affector3 = Affector.star;
+                            regexdata.fillAffector(affector3);
+                        }           
                         break;
                     case '.': //.
-                        Affector affector4 = Affector.dot;
-                        regexdata.fillAffector(affector4);
+                        if (letterCapture)
+                        {
+
+                        }
+                        else
+                        {
+                            Affector affector4 = Affector.dot;
+                            regexdata.fillAffector(affector4);
+                        }   
                         break;
                     default: //no special character detected
                         if (startCapture > 0)
@@ -51,6 +80,17 @@ namespace FormalMethods
                         }
                         else
                         {
+                            if (letterCapture)
+                            {
+                                regexdata.addLettertoCapture(c, 1);
+                            }
+                            else
+                            {
+                                regexdata.newCapture();
+                                letterCapture = true;
+                                regexdata.addLettertoCapture(c, 1); 
+                            }
+                            
 
                             //aabaa
                         }
