@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Windows;
 
 namespace FormalMethods
 {
     public class Automata<T> where T : IComparable
     {
-        public HashSet<Transition<T>> Transitions { get; private set; }
+        public HashSet<Transition<T>> Transitions { get; set; }
 
         public SortedSet<T> States { get; private set; }
         public SortedSet<T> StartStates { get; private set; }
@@ -17,8 +18,15 @@ namespace FormalMethods
         protected Automata() : this(new SortedSet<char>())
         { }
 
-        protected Automata(char[] s) : this(new SortedSet<char>(s))
-        { }
+        public Automata(char[] s) : this(new SortedSet<char>(s))
+        {
+            foreach (char c in s)
+            {
+                Symbols.Add(c);
+            }
+
+
+        }
 
         protected Automata(SortedSet<char> symbols)
         {
@@ -65,8 +73,6 @@ namespace FormalMethods
                 Console.WriteLine(transition);
         }
 
-        
-
         public List<T> GetToStates(T from, char symbol)
         {
             List<T> toStates = new List<T>();
@@ -78,6 +84,53 @@ namespace FormalMethods
             return toStates;
         }
 
-        
+        public bool Accept(string input)
+        {
+            T currentState;
+            bool validpath = false;
+            foreach (var start in StartStates) 
+            {
+                currentState = start;
+                for (int index = 0; index < input.Length; index++)
+                {
+                    char curr_symbol = input[index];
+                    
+
+                    if (Symbols.Contains(curr_symbol))
+                    {
+                                                   // diverse letters dienen nog afgevangen te worden, transition met meerdere zelfde letters
+                            foreach (Transition<T> transition in Transitions) 
+                            {
+                                if (transition.FromState.Equals(currentState) && transition.Symbol.Equals(curr_symbol))
+                                {
+                                    currentState = transition.ToState;
+                                break;
+                                }
+                            }
+
+                        
+                    }
+                    else
+                    {
+                        Debug.WriteLine(curr_symbol + "is not in alphabet defined");
+                    }
+                }
+                if (FinalStates.Contains(currentState)) 
+                {
+                    validpath = true;
+                }
+            }
+            Debug.WriteLine(input + validpath);
+            return validpath;
+
+
+        }
+
+
+
+  
+
+
+
     }
 }

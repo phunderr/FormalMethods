@@ -2,8 +2,8 @@
 using DotNetGraph.Edge;
 using DotNetGraph.Extensions;
 using DotNetGraph.Node;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -21,91 +21,76 @@ namespace FormalMethods
             batfile.Clear();
         }
 
-        public void CreateGraph(List<Node> nodes, string name)
+        public void CreateGraph(Automata<string> automata, string name)
         {
             var graph = new DotGraph(name, true);
             List<DotNode> dotNodes = new List<DotNode>();
-            foreach (var node in nodes)
+            foreach (var node in automata.States)
             {
                 DotNode graphnode;
-                if (node.nodeType == NodeType.EndNode)
+                graphnode = new DotNode(node)
                 {
-                    graphnode = new DotNode(node.name)
-                    {
-                        Shape = DotNodeShape.DoubleCircle,
-                        Label = node.name,
-                        FillColor = Color.Green,
-                        FontColor = Color.Black,
-                        Style = DotNodeStyle.Filled,
-                        Width = 0.5f,
-                        Height = 0.5f
-                    };
-                }
-                else if (node.nodeType == NodeType.StartNode)
-                {
-                    graphnode = new DotNode(node.name)
-                    {
-                        Shape = DotNodeShape.Circle,
-                        Label = node.name,
-                        FillColor = Color.LightBlue,
-                        FontColor = Color.Black,
-                        Style = DotNodeStyle.Filled,
-                        Width = 0.5f,
-                        Height = 0.5f
-                    };
-                }
-                else
-                {
-                    graphnode = new DotNode(node.name)
-                    {
-                        Shape = DotNodeShape.Circle,
-                        Label = node.name,
-                        FillColor = Color.Coral,
-                        FontColor = Color.Black,
-                        Style = DotNodeStyle.Solid,
-                        Width = 0.5f,
-                        Height = 0.5f
-                    };
-                }
+                    Shape = DotNodeShape.Circle,
+                    Label = node,
+                    FillColor = Color.Coral,
+                    FontColor = Color.Black,
+                    Style = DotNodeStyle.Solid,
+                    Width = 0.5f,
+                    Height = 0.5f
+                };
+
 
                 dotNodes.Add(graphnode);
-                graph.Elements.Add(graphnode);
+
             }
-            for (int i = 0; i < nodes.Count; i++)
+
+            foreach (var node in dotNodes)
             {
-                Node node = nodes[i];
-                foreach (var item in node.connections)
+                if (automata.StartStates.Contains(node.Identifier))
                 {
-                    string nodename = item.node.name;
-                    int number = 0;
-                    for (int i2 = 0; i2 < dotNodes.Count; i2++)
-                    {
-                        if (dotNodes[i2].Label.Text.Equals(nodename))
-                        {
-                            number = i2;
-                        }
-                    }
-
-                    var myEdge = new DotEdge(dotNodes[i], dotNodes[number])
-                    {
-                        ArrowHead = DotEdgeArrowType.Vee,
-                        ArrowTail = DotEdgeArrowType.Diamond,
-                        Color = Color.Black,
-                        FontColor = Color.Black,
-                        Label = item.letter.ToString()
-                    };
-
-
-
-                    graph.Elements.Add(myEdge);
+                    node.FillColor = Color.LawnGreen;
+                    node.Style = DotNodeStyle.Filled;
                 }
+
+                if (automata.FinalStates.Contains(node.Identifier))
+                {
+                    node.FillColor = Color.LightBlue;
+                    node.Shape = DotNodeShape.DoubleCircle;
+                    node.Style = DotNodeStyle.Filled;
+                }
+                graph.Elements.Add(node);
             }
+
+
+            foreach (var trans in automata.Transitions)
+            {
+
+
+                var myEdge = new DotEdge(trans.FromState, trans.ToState)
+                {
+                    ArrowHead = DotEdgeArrowType.Vee,
+                    ArrowTail = DotEdgeArrowType.Diamond,
+                    Color = Color.Black,
+                    FontColor = Color.Black,
+                    Label = trans.Symbol.ToString()
+                };
+                graph.Elements.Add(myEdge);
+            }
+
+
 
             var dot = graph.Compile();
-            dot = dot.Insert(10 + name.Length, "rankdir=\"LR\";");
+            dot = dot.Insert(12 + name.Length, "rankdir=LR;");
             File.WriteAllText(name + ".dot", dot);
-            batfile.AppendLine($"dot -T pdf {name}.dot -O");
-            batfile.AppendLine($"start {name}.dot.pdf -O");
+            using (Process process = new Process())
+            {
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.FileName = ("dot");
+                process.StartInfo.Arguments = $"-T svg {name}.dot -O {name}";
+                process.Start();
+            }
+            //    batfile.AppendLine($"dot -T svg {name}.dot -O {name}");
+            //batfile.AppendLine($"start {name}.dot.svg");
         }
     }
 }
