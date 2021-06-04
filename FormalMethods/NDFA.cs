@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FormalMethods
 {
-    class NDFA<T> : Automata<T> where T : IComparable 
+    class NDFA<T> : Automata<T> where T : IComparable
     {
         protected NDFA() : base(new SortedSet<char>())
         { }

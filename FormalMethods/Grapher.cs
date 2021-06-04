@@ -2,7 +2,6 @@
 using DotNetGraph.Edge;
 using DotNetGraph.Extensions;
 using DotNetGraph.Node;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -30,22 +29,23 @@ namespace FormalMethods
             {
                 DotNode graphnode;
                 graphnode = new DotNode(node)
-                    {
-                        Shape = DotNodeShape.Circle,
-                        Label = node,
-                        FillColor = Color.Coral,
-                        FontColor = Color.Black,
-                        Style = DotNodeStyle.Solid,
-                        Width = 0.5f,
-                        Height = 0.5f
-                    };
-                
+                {
+                    Shape = DotNodeShape.Circle,
+                    Label = node,
+                    FillColor = Color.Coral,
+                    FontColor = Color.Black,
+                    Style = DotNodeStyle.Solid,
+                    Width = 0.5f,
+                    Height = 0.5f
+                };
+
 
                 dotNodes.Add(graphnode);
-                
+
             }
 
-            foreach (var node in dotNodes) {
+            foreach (var node in dotNodes)
+            {
                 if (automata.StartStates.Contains(node.Identifier))
                 {
                     node.FillColor = Color.LawnGreen;
@@ -64,7 +64,7 @@ namespace FormalMethods
 
             foreach (var trans in automata.Transitions)
             {
-                
+
 
                 var myEdge = new DotEdge(trans.FromState, trans.ToState)
                 {
@@ -82,10 +82,10 @@ namespace FormalMethods
             var dot = graph.Compile();
             dot = dot.Insert(12 + name.Length, "rankdir=LR;");
             File.WriteAllText(name + ".dot", dot);
-            using (Process process = new Process()) 
+            using (Process process = new Process())
             {
                 process.StartInfo.UseShellExecute = false;
-                process.StartInfo.FileName =  ("dot");
+                process.StartInfo.FileName = ("dot");
                 process.StartInfo.Arguments = $"-T svg {name}.dot -O {name}";
                 process.Start();
             }

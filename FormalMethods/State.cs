@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace FormalMethods
@@ -8,9 +7,9 @@ namespace FormalMethods
     {
         public string Name { get; set; }
         public bool StartState { get; set; }
-        public bool EndState  { get; set; }
+        public bool EndState { get; set; }
 
-        public State(string name,bool start, bool end)
+        public State(string name, bool start, bool end)
         {
             Name = name;
             StartState = start;

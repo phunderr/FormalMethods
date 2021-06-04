@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Windows;
 
 namespace FormalMethods
 {
@@ -19,11 +20,12 @@ namespace FormalMethods
 
         public Automata(char[] s) : this(new SortedSet<char>(s))
         {
-            foreach (char c in s) {
+            foreach (char c in s)
+            {
                 Symbols.Add(c);
             }
 
-            
+
         }
 
         protected Automata(SortedSet<char> symbols)
@@ -71,8 +73,6 @@ namespace FormalMethods
                 Console.WriteLine(transition);
         }
 
-        
-
         public List<T> GetToStates(T from, char symbol)
         {
             List<T> toStates = new List<T>();
@@ -84,39 +84,51 @@ namespace FormalMethods
             return toStates;
         }
 
-        //public List<String> geefTaalTotN(int n, string alphabet)
-        //{
-        //    List<String> intaal = new List<string>();
-        //    List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+        public bool Accept(string input)
+        {
+            T currentState;
+            bool validpath = false;
+            foreach (var start in StartStates) 
+            {
+                currentState = start;
+                for (int index = 0; index < input.Length; index++)
+                {
+                    char curr_symbol = input[index];
+                    
 
-        //    foreach (string item in strings)
-        //    {
-        //        if (CheckBool(item))
-        //        {
-        //            intaal.Add(item);
-        //        }
-        //    }
+                    if (Symbols.Contains(curr_symbol))
+                    {
+                                                   // diverse letters dienen nog afgevangen te worden, transition met meerdere zelfde letters
+                            foreach (Transition<T> transition in Transitions) 
+                            {
+                                if (transition.FromState.Equals(currentState) && transition.Symbol.Equals(curr_symbol))
+                                {
+                                    currentState = transition.ToState;
+                                break;
+                                }
+                            }
 
-        //    return intaal;
-        //}
+                        
+                    }
+                    else
+                    {
+                        Debug.WriteLine(curr_symbol + "is not in alphabet defined");
+                    }
+                }
+                if (FinalStates.Contains(currentState)) 
+                {
+                    validpath = true;
+                }
+            }
+            Debug.WriteLine(input + validpath);
+            return validpath;
 
 
-        //public List<String> geefNietInTaalTotN(int n, string alphabet)
-        //{
-        //    List<String> nonAcceptedWords = new List<string>();
-        //    List<string> strings = GenerateStrings.GenerateString(n, alphabet);
+        }
 
-        //    foreach (string item in strings)
-        //    {
-        //        if (!CheckBool(item))
-        //        {
-        //            nonAcceptedWords.Add(item);
-        //        }
-        //    }
 
-        //    return nonAcceptedWords;
-        //}
 
+  
 
 
 

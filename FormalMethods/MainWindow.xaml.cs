@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 
 
 namespace FormalMethods
@@ -28,7 +16,7 @@ namespace FormalMethods
 
 
 
-            List<string> lijst = GenerateStrings.GenerateString(2, "ab");
+            List<string> lijst = GenerateStrings.GenerateString(8, "ab");
 
             foreach (string element in lijst)
             {
@@ -38,8 +26,8 @@ namespace FormalMethods
             char[] alphabet = { 'a', 'b' };
             Automata<string> automata = new Automata<string>(alphabet);
 
-            automata.AddTransition(new Transition<string>("0", 'a',"1"));
-            automata.AddTransition(new Transition<string>("0", 'b',"4"));
+            automata.AddTransition(new Transition<string>("0", 'a', "1"));
+            automata.AddTransition(new Transition<string>("0", 'b', "4"));
 
             automata.AddTransition(new Transition<string>("1", 'a', "4"));
             automata.AddTransition(new Transition<string>("1", 'b', "2"));
@@ -70,9 +58,29 @@ namespace FormalMethods
             automata.DefineAsFinalState("3");
             automata.DefineAsFinalState("8");
 
+
+            List<string> valid = new List<string>();
+            List<string> invalid = new List<string>();
+
+            foreach (string test in lijst) 
+            {
+                if (automata.Accept(test)) 
+                {
+                    valid.Add(test);
+                }
+                else 
+                {
+                    invalid.Add(test);
+                }
+            }
+
+            
+
+
+
             Grapher grapher = new Grapher();
             grapher.CreateGraph(automata, "test");
-            
+
 
 
 
