@@ -8,11 +8,15 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 
+
+
 namespace FormalMethods
 {
     class Grapher
     {
         StringBuilder batfile = new StringBuilder();
+
+
 
         public void SaveToPDF()
         {
@@ -20,6 +24,8 @@ namespace FormalMethods
             System.Diagnostics.Process.Start("pdf.bat");
             batfile.Clear();
         }
+
+
 
         public void CreateGraph(Automata<string> automata, string name)
         {
@@ -40,9 +46,15 @@ namespace FormalMethods
                 };
 
 
+
+
                 dotNodes.Add(graphnode);
 
+
+
             }
+
+
 
             foreach (var node in dotNodes)
             {
@@ -51,6 +63,8 @@ namespace FormalMethods
                     node.FillColor = Color.LawnGreen;
                     node.Style = DotNodeStyle.Filled;
                 }
+
+
 
                 if (automata.FinalStates.Contains(node.Identifier))
                 {
@@ -62,8 +76,12 @@ namespace FormalMethods
             }
 
 
+
+
             foreach (var trans in automata.Transitions)
             {
+
+
 
 
                 var myEdge = new DotEdge(trans.FromState, trans.ToState)
@@ -76,6 +94,8 @@ namespace FormalMethods
                 };
                 graph.Elements.Add(myEdge);
             }
+
+
 
 
 
@@ -94,4 +114,3 @@ namespace FormalMethods
         }
     }
 }
-
