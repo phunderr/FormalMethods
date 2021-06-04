@@ -6,6 +6,7 @@ namespace FormalMethods
 {
     class Generatestring
     {
+        // omzetten naar visualisatie interactie met ui
         HashSet<char> alphabet = new HashSet<char>();
         string[] wordlist;
         int length;

@@ -9,7 +9,7 @@ namespace FormalMethods
 
 
 	//this class generates list of strings to specified lenght with specified letters
-	class GenerateStrings
+	public class GenerateStrings
 	{
 		static string[] arrA;
 		static List<string> strings = new List<string>();
@@ -30,9 +30,10 @@ namespace FormalMethods
 			}
 		}
 
-		//generates list of strings to specified lenght with specified letters
+		//generates list of strings to specified lenght with specified letters TODO 0 tot n instead of just n 
 		public static List<String> GenerateString(int i, string alphabet)
 		{
+			//loop van nBits van lengtge 0 tot n wat is de main
 			letters = alphabet;
 			strings.Clear();
 			arrA = new string[i];

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="FormalMethods.TransitionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FormalMethods"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="300">
+    <Grid>
+
+
+
+        <StackPanel HorizontalAlignment="Stretch">
+
+
+
+            <Label Content="Grammar" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content=" FromState " />
+                <TextBox Width="30" x:Name="FromState"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content=" Character "/>
+                    <TextBox Width="30" x:Name="Character"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content=" ToState "/>
+                    <TextBox Width="30" x:Name="ToState"/>
+                    
+                </StackPanel>
+                
+            </StackPanel>
+
+
+
+        </StackPanel>
+
+
+
+    </Grid>
+</UserControl>

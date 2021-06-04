@@ -5,4 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FormalMethods"
         mc:Ignorable="d"
-        Title="MainWindow" Height="526" Width="941"/>
+        Title="MainWindow" Height="526" Width="941">
+    <Window.Resources>
+        <Style x:Key="MyRadioButton" TargetType="{x:Type RadioButton}">
+            
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Label Content=" Input " HorizontalAlignment="Center" FontSize="20" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="40,0,100,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton GroupName="Input" x:Name="RegexBox" VerticalAlignment="Center"/>
+                    <Label Content=" Regex "/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton GroupName="Input" x:Name="GrammarBox" VerticalAlignment="Center"/>
+                    <Label Content=" Grammar " />
+                </StackPanel>
+                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="40,20,100,0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton GroupName="Input" x:Name="AutomataBox" VerticalAlignment="Center"/>
+                    <Label Content=" Json "/>
+                </StackPanel>
+                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 60, 0, 0">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="20, 0, 100, 0"/>
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="RegexButton" Content="Regex" FontSize="16" Visibility="Hidden" Click="RegexButton_Click" />
+                <Button x:Name="AutomataButton" Content="Automata" FontSize="16" Visibility="Hidden" Click="AutomataButton_Click" />
+                <Button x:Name="GrammarButton" Content="Grammar" FontSize="16" Visibility="Hidden" Click="GrammarButton_Click"/>
+            </StackPanel>
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Height="30" VerticalAlignment="Top">
+            <Label Content="AlfaBet:" Margin="10, 0, 20, 0"/>
+            <TextBox Width="200"/>
+        </StackPanel>
+        <ScrollViewer Margin="0,255,4,0" Grid.RowSpan="2">
+            <StackPanel Grid.Row="1" x:Name="InputPanel" Height="224" VerticalAlignment="Bottom"  >
+                <StackPanel.Resources>
+                    <Style TargetType="UserControl">
+                        <Setter Property="Margin" Value="300, 0, 30, 0"/>
+                    </Style>
+                </StackPanel.Resources>
+               
+            </StackPanel>
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1">
+            <TextBlock Background="#eeeeee" ></TextBlock>
+        </ScrollViewer>
+       
+        <ScrollViewer Grid.Row="1" Grid.Column="1" >
+            <TextBlock Background="#eeeeee" ></TextBlock>
+        </ScrollViewer>
+
+    </Grid>
+
+</Window>
