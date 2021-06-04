@@ -6,7 +6,7 @@ namespace FormalMethods
 {
     class RegexParser
     {
-        public static void ParseRegex(string regex)
+        public void ParseRegex(string regex)
         {
             int startCapture = 0;
             int countList = 0; 
@@ -29,7 +29,7 @@ namespace FormalMethods
                         }
                         break;
                     case '|': //or 
-
+                        
                         Affector affector = Affector.or;
                         regexdata.fillAffector(affector);
                         break;

@@ -12,7 +12,8 @@ namespace FormalMethods
 
         public Regex()
         {
-      
+            this.affector = new Affector(); 
+
         }
         public Regex(string groupOfLetters)
         {

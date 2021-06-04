@@ -23,6 +23,8 @@ namespace FormalMethods
         public MainWindow()
         {
             InitializeComponent();
+            RegexParser regexParser = new RegexParser();
+            regexParser.ParseRegex("(abc)+"); 
         }
     }
 }

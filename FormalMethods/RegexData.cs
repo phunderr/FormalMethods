@@ -6,6 +6,7 @@ namespace FormalMethods
 {
     enum Affector
     {
+        nul,
         or,
         plus,
         star,
@@ -36,7 +37,7 @@ namespace FormalMethods
 
         public void fillAffector(Affector affector)
         {
-            regexList[regexList.Count].affector = affector; 
+            this.regexList[regexList.Count-1].affector = affector; 
         }
 
         public void newCapture()
