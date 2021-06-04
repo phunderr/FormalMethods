@@ -9,7 +9,7 @@ namespace FormalMethods
         public static void ParseRegex(string regex)
         {
             int startCapture = 0;
-            bool letterCapture = false; 
+            int countList = 0; 
             RegexData regexdata = new RegexData(); 
             foreach (char c in regex.ToCharArray())
             {
@@ -17,11 +17,11 @@ namespace FormalMethods
                 {
                     case '(':
                         startCapture ++; // caputere group started; 
-                        regexdata.newCapture();
-                        letterCapture = false; 
+                        countList++; 
+                        regexdata.newCapture(); 
                         break;
                     case ')': //Last
-                        regexdata.newRegex(startCapture); 
+                        regexdata.newRegex(countList); 
                         startCapture--;
                         if(startCapture <= 0)
                         {
@@ -29,68 +29,38 @@ namespace FormalMethods
                         }
                         break;
                     case '|': //or 
-                        if (letterCapture)
-                        {
 
-                        }
-                        else
-                        {
-                            Affector affector = Affector.or;
-                            regexdata.fillAffector(affector);
-                        }
+                        Affector affector = Affector.or;
+                        regexdata.fillAffector(affector);
                         break;
                     case '+': //+ 
-                        if (letterCapture)
-                        {
-
-                        }
-                        else
-                        {
-                            Affector affector2 = Affector.plus;
-                            regexdata.fillAffector(affector2);
-                        }
+                      
+                        Affector affector2 = Affector.plus;
+                        regexdata.fillAffector(affector2);
                         break;
                     case '*': //*
-                        if (letterCapture)
-                        {
-
-                        }
-                        else
-                        {
-                            Affector affector3 = Affector.star;
-                            regexdata.fillAffector(affector3);
-                        }           
+                        
+                        Affector affector3 = Affector.star;
+                        regexdata.fillAffector(affector3);
                         break;
                     case '.': //.
-                        if (letterCapture)
-                        {
-
-                        }
-                        else
-                        {
-                            Affector affector4 = Affector.dot;
-                            regexdata.fillAffector(affector4);
-                        }   
+                       
+                        Affector affector4 = Affector.dot;
+                        regexdata.fillAffector(affector4);
                         break;
                     default: //no special character detected
                         if (startCapture > 0)
                         {
-                            regexdata.addLettertoCapture(c, startCapture);
+                            regexdata.addLettertoCapture(c, countList);
                             //(ab(cd)*)+
                         }
                         else
                         {
-                            if (letterCapture)
-                            {
-                                regexdata.addLettertoCapture(c, 1);
-                            }
-                            else
-                            {
-                                regexdata.newCapture();
-                                letterCapture = true;
-                                regexdata.addLettertoCapture(c, 1); 
-                            }
-                            
+                            regexdata.newCapture();
+                            countList++;
+                            regexdata.addLettertoCapture(c, countList);
+                            regexdata.newRegex(countList);
+                            regexdata.CaptureClear();
 
                             //aabaa
                         }
