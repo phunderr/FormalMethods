@@ -32,6 +32,9 @@ namespace FormalMethods
             time.Tick += new EventHandler(Timer_tick);
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
             time.Start();
+            
+            RegexParser regexParser = new RegexParser();
+            regexParser.ParseRegex("(abc)+"); 
         }
 
         private void Timer_tick(object sender, EventArgs e)
