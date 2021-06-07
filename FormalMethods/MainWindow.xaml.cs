@@ -26,19 +26,19 @@ namespace FormalMethods
 
         public MainWindow()
         {
-            Input = new List<UserControl>();
+            /*Input = new List<UserControl>();
             InitializeComponent();
             DispatcherTimer time = new DispatcherTimer();
             time.Tick += new EventHandler(Timer_tick);
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            time.Start();
+            time.Start();*/
             
             RegexParser regexParser = new RegexParser();
-            regexParser.ParseRegex("(abc)+"); 
+            regexParser.ParseRegex("(ab|c(a.b)*)+aa*"); 
 
 
 
-            List<string> lijst = GenerateStrings.GenerateString(8, "ab");
+            /*List<string> lijst = GenerateStrings.GenerateString(8, "ab");
 
             foreach (string element in lijst)
             {
@@ -133,7 +133,7 @@ namespace FormalMethods
                 AutomataButton.Visibility = Visibility.Visible;
 
 
-            }
+            }*/
 
 
             

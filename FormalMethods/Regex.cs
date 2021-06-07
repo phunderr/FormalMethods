@@ -4,16 +4,22 @@ using System.Text;
 
 namespace FormalMethods
 {
-    class Regex
+    class Regex : IComparable<Regex>
     {
         public string groupOfLetters { get; set; }
         public string remainder { get; set; }
         public Affector affector { get; set; }
 
-        public Regex()
-        {
-            this.affector = new Affector(); 
+        public int id { get; set; }
 
+        public int count { get; set; }
+
+        public Regex(int id)
+        {
+            this.id = id; 
+            this.affector = new Affector();
+
+            count = 0; 
         }
         public Regex(string groupOfLetters)
         {
@@ -31,6 +37,24 @@ namespace FormalMethods
             this.groupOfLetters = groupOfLetters;
             this.remainder = remainder;
             this.affector = affector; 
+        }
+
+        public int CompareTo(Regex obj)
+        {
+            if (this.id > obj.id) return 1;
+            if (this.id < obj.id) return -1;
+            if (this.id == obj.id)
+            {
+                if (this.affector == Affector.nul) return -1;
+                if (this.affector == Affector.star && obj.affector != Affector.nul ) return -1;
+
+                if (this.affector == Affector.plus && obj.affector != Affector.nul) return -1;
+
+                
+
+                return 1;
+            }
+            return 0;
         }
     }
 }
