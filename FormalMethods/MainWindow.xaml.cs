@@ -100,8 +100,8 @@ namespace FormalMethods
 
 
 
-            Grapher grapher = new Grapher();
-            grapher.CreateGraph(automata, "test");
+            //Grapher grapher = new Grapher();
+           // grapher.CreateGraph(automata, "test");
 
 
 
@@ -173,6 +173,16 @@ namespace FormalMethods
             UserControl control = new TransitionView();
             Input.Add(control);
             InputPanel.Children.Add(control);
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Quiz_btn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
