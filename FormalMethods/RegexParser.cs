@@ -19,7 +19,8 @@ namespace FormalMethods
                 {
                     case '(':
                         startCapture ++; // caputere group started; 
-                        countList++; 
+                        countList++;
+                        sorter++;
                         regexdata.newCapture();
                         affectorClose = false;
                         
@@ -38,7 +39,7 @@ namespace FormalMethods
                         break;
                     case '|': //or 
                         countList++;
-                        sorter++;
+                        //sorter++;
                         regexdata.newAffecRegex(sorter);
                         regexdata.fillRemainder();
 
@@ -57,17 +58,7 @@ namespace FormalMethods
                         Affector affector3 = Affector.star;
                         regexdata.fillAffector(affector3);
                         break;
-                    case '.': //. 
-                        countList++;
-                        sorter++;
-                        regexdata.newAffecRegex(sorter);
-                        regexdata.fillRemainder();
-
-                        affectorClose = true;
-
-                        Affector affector4 = Affector.dot;
-                        regexdata.fillAffector(affector4);
-                        break;
+                    
                     default: //no special character detected
                         if (startCapture > 0)
                         {
@@ -98,6 +89,7 @@ namespace FormalMethods
                 }
             }
             regexdata.regexList.Sort();
+            regexdata.startThompson(); 
         }
     }
 }
