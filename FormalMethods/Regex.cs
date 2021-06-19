@@ -50,6 +50,7 @@ namespace FormalMethods
                 if (this.affector == obj.affector) return 0;
                 if (this.affector == Affector.plus && obj.affector != Affector.nul) return -1;
                 if (this.affector == Affector.or && obj.affector == Affector.dot) return 0;
+                
 
 
 
