@@ -4,61 +4,56 @@ using System.Text;
 
 namespace FormalMethods
 {
-    class Regex : IComparable<Regex>
+    class Regex
     {
         public string groupOfLetters { get; set; }
-        public string remainder { get; set; }
-        public Affector affector { get; set; }
+        public int layerId { get; set; }
 
-        public int id { get; set; }
+        public int topLayerId { get; set; }
 
-        public int count { get; set; }
+        public List<string> Orlist { get; set; }
 
-        public Regex(int id)
+
+        public Regex(int id, string start, int topLayerId)
         {
-            this.id = id; 
-            this.affector = new Affector();
-
-            count = 0; 
+            this.layerId = id;
+            this.groupOfLetters = start;
+            this.topLayerId = topLayerId; 
         }
         public Regex(string groupOfLetters)
         {
             this.groupOfLetters = groupOfLetters; 
         }
       
-        public Regex(string groupOfLetters, Affector affector)
+        public void addLetter(string letter)
         {
-            this.groupOfLetters = groupOfLetters;
-            this.affector = affector; 
+            this.groupOfLetters += letter; 
         }
 
-        public Regex(string groupOfLetters, string remainder, Affector affector)
+        public void checkOr()
         {
-            this.groupOfLetters = groupOfLetters;
-            this.remainder = remainder;
-            this.affector = affector; 
-        }
-
-        public int CompareTo(Regex obj)
-        {
-            if (this.id > obj.id) return 1;
-            if (this.id < obj.id) return -1;
-            if (this.id == obj.id)
+            Orlist = new List<string>();
+            Orlist.Add("");
+            int count = 0;
+            foreach (char c in this.groupOfLetters)
             {
-                if (this.affector == Affector.nul) return -1;
-                if (this.affector == Affector.star && obj.affector != Affector.nul ) return -1;
-                if (this.affector == obj.affector) return 0;
-                if (this.affector == Affector.plus && obj.affector != Affector.nul) return -1;
-                if (this.affector == Affector.or && obj.affector == Affector.dot) return 0;
-                
+                switch (c)
+                {
+                    case '|':
+                        Orlist.Add("");
+                        count++;
+                        break;
+
+                    default: //no special character detected
+                        Orlist[count] += c;
+                        break;
 
 
-
-
-
-                return 1;
+                }
             }
-            return 0;
+
         }
+
+
     }
 }

@@ -52,89 +52,82 @@ namespace FormalMethods
             return list + 1;
         }
 
-        public int or(int begin, int end, int list, string a)
+        public int or(int begin, int end, int list)
         {
-            beginEps(begin, list); 
-            list++;
+            list = beginEps(begin, list);
+            
+                
+            list = endEps(list + 1, end); 
 
-            
-           
-            for (int i = 0; i < a.Length; i++)
-            {
-                automata.AddTransition(new Transition<string>(list + "", a[i], (list + 1) + ""));
-                list++;
-            }
-            
-            
-            
-
-            
-            endEps(end, list); 
-
-            return list + 1; 
+            return list; 
         }
 
-        public int plus(int begin,int end, int list, string letters)
+        public int plus(int begin,int end, int list)
         {
 
-            beginEps(begin, list); 
-            list++; 
-            for(int i =0; i < letters.Length; i++)
+            list = beginEps(begin, list);
+            int list2 = list;
+
+            list = endEps(list + 1, end);
+
+
+            if (end <= 0)
             {
-                automata.AddTransition(new Transition<string>(list + "", letters[i], (list + 1) + ""));
-                list++; 
+                epsilon(list - 1, list2);
+            }
+            else
+            {
+                epsilon(list, list2);
             }
 
-            epsilon(list + 1, begin);
-            endEps(end, list); 
-            
-            return list + 1;
 
-
-
+            return list;
 
         }
 
-        public int star(int begin, int end ,int list, string letters)
-        {         
-            
-            beginEps(begin, list); 
-            list++;
-            int list2 = list; 
-            for (int i = 0; i < letters.Length; i++)
-            {
-                automata.AddTransition(new Transition<string>(list + "", letters[i], (list + 1) + ""));
-                list++;
-            }
-            epsilon(list, list2);
-            endEps(end, list); 
+        public int star(int begin, int end ,int list)
+        {
+
+            list = beginEps(begin, list);
+            int list2 = list;
+
+            list = endEps(list + 1, end);
+
             
             if (end <= 0)
             {
-                epsilon(begin, list + 1);
+                epsilon(begin, list);
+                epsilon(list - 1, list2);
             }
             else
             {
                 epsilon(begin, end);
+                epsilon(list, list2);
             }
 
-            return list + 1;
+
+            return list;
         }
 
-        public void beginEps(int begin, int list)
+        public int beginEps(int begin, int list)
         {
-            epsilon(begin, list + 1);
+            list++; 
+            epsilon(begin, list);
+            return list;
         }
 
-        public void endEps(int end, int list)
+        public int endEps(int list, int end)
         {
             if (end <= 0)
             {
-                epsilon(list, list + 1);
+                list++; 
+                epsilon(list - 1, list);
+                return list; 
             }
             else
             {
                 epsilon(list, end);
+                return list; 
             }
         }
 

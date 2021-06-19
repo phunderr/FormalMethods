@@ -34,7 +34,7 @@ namespace FormalMethods
             time.Start();*/
             
             RegexParser regexParser = new RegexParser();
-            regexParser.ParseRegex("(a(a)*|(a)*b)*a*b+"); 
+            regexParser.ParseRegex("a+a|a(a|bc(ab)*)*ab"); 
 
 
 
