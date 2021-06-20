@@ -235,13 +235,17 @@ namespace FormalMethods
             return list;
         }
 
+        public Automata<string> GetAutomata()
+        {
+            return Thompson.GetAutomata(); 
+        }
 
-       
 
-    
 
-        
-        
+
+
+
+
 
     }
 }

@@ -6,6 +6,9 @@ namespace FormalMethods
 {
     class RegexParser
     {
+        public RegexData regexdata; 
+
+
         public bool ParseRegex(string regex)
         {
            
@@ -23,7 +26,7 @@ namespace FormalMethods
             int Ccounter = 0; 
             
            
-            RegexData regexdata = new RegexData();
+            this.regexdata = new RegexData();
             regexdata.newRegex(idCounter, "", currentId);
             foreach (char c in regex.ToCharArray())
             {
@@ -58,6 +61,11 @@ namespace FormalMethods
            
             regexdata.startThompson();
             return true; 
+        }
+
+        public Automata<string> GetAutomata()
+        {
+            return this.regexdata.GetAutomata();
         }
     }
 }

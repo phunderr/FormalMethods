@@ -2,6 +2,7 @@
 using DotNetGraph.Edge;
 using DotNetGraph.Extensions;
 using DotNetGraph.Node;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -127,7 +128,7 @@ namespace FormalMethods
 
             var dot = graph.Compile();
             dot = dot.Insert(12 + name.Length, "rankdir=LR;");
-            File.WriteAllText(name + ".dot", dot);
+            File.WriteAllText( name + ".dot",  dot);
             using (Process process = new Process())
             {
                 process.StartInfo.UseShellExecute = false;

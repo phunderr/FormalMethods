@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FormalMethods"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="Window1" Height="1000" Width="1000">
     <Canvas x:Name="canvas">
-        <Image x:Name="image" Source="/test.dot.png" Stretch="Fill" Canvas.Top="57" />
+        <Image x:Name="image"  Stretch="Fill" Canvas.Top="57"  />
     </Canvas>
 </Window>

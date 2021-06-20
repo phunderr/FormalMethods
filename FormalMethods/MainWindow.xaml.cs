@@ -24,9 +24,11 @@ namespace FormalMethods
 
         private List<UserControl> Input { get; set; }
         private PopUp popup = new PopUp();
+        RegexParser regexParser = new RegexParser();
+        private bool IsRegex = false;
+        Automata<string> automata = null;
 
-
-         public MainWindow()
+        public MainWindow()
         {
             Input = new List<UserControl>();
             InitializeComponent();
@@ -35,11 +37,7 @@ namespace FormalMethods
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
             time.Start();
             
-            RegexParser regexParser = new RegexParser();
-            if (!regexParser.ParseRegex("a+a|a(a|bc(ab*))*ab"))
-            {
-                this.Close();
-            }
+            
 
             popup.ActionEvent += DFAOrMin;
 
@@ -147,18 +145,15 @@ namespace FormalMethods
 
         private void RegexButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Input.Count != 0)
-            {
-                if (!(Input.First() is RegexView))
-                {
-                    Input.Clear();
-                    InputPanel.Children.Clear();
-                }
-            }
+            
+            Input.Clear();
+            InputPanel.Children.Clear();
+            
 
-            UserControl control = new RegexView();
+            RegexView control = new RegexView();
             Input.Add(control);
             InputPanel.Children.Add(control);
+            IsRegex = true;
         }
 
         private void AutomataButton_Click(object sender, RoutedEventArgs e)
@@ -179,6 +174,7 @@ namespace FormalMethods
             UserControl control = new TransitionView();
             Input.Add(control);
             InputPanel.Children.Add(control);
+            IsRegex = false;
         }
 
         private void Start_Click(object sender, RoutedEventArgs e)
@@ -186,53 +182,68 @@ namespace FormalMethods
             Window w = popup;
             w.Show();
 
-            Automata<string> automata = new Automata<string>(Alphabet.Text.ToCharArray());
+             automata = new Automata<string>(Alphabet.Text.ToCharArray());
+            string rege = string.Empty;
             //Grammar to automata
             foreach (Object control in InputPanel.Children)
             {
-                if (control.GetType().Equals(new TransitionView()))
+                //Grammar
+                if (control.GetType().Equals(typeof(TransitionView)))
                 {
                     char[] c = (control as TransitionView).Character.Text.ToCharArray();
                     automata.AddTransition(new Transition<string>(new State((control as TransitionView).FromState.Text), c[0], new State((control as TransitionView).ToState.Text)));
 
                 }
-            }
-            if (InputPanel.Children[0].GetType().Equals(new TransitionView()))
-            {
-                char[] start = StartStateInput.Text.ToCharArray();
-                foreach (char c in start)
-                    automata.DefineAsStartState(new State(c.ToString()));
-
-                char[] end = EndStatesInput.Text.ToCharArray();
-                foreach (char c in end)
-                    automata.DefineAsFinalState(new State(c.ToString()));
-            }
-
-
-            List<string> lijst = GenerateStrings.GenerateString(8, Alphabet.Text);
-            List<string> accept = new List<string>();
-            List<string> notaccept = new List<string>();
-            foreach (string s in lijst)
-            {
-                if (automata.AcceptNDFA(s))
+                if (control.GetType().Equals(typeof(RegexView)))
                 {
-                    accept.Add(s);
+                    rege = (control as RegexView).RegexIn.Text;
                 }
-                else
-                {
-                    notaccept.Add(s);
-                }
+
             }
 
-            foreach (string acc in accept)
-                Accept.Text += (acc + "\n");
-            
-            foreach (string nacc in notaccept)
-                Notaccept.Text += (nacc + "\n");
+            if (!IsRegex)
+            {
+                if (InputPanel.Children[0].GetType().Equals(typeof(TransitionView)))
+                {
+                    char[] start = StartStateInput.Text.ToCharArray();
+                    foreach (char c in start)
+                        automata.DefineAsStartState(new State(c.ToString()));
+
+                    char[] end = EndStatesInput.Text.ToCharArray();
+                    foreach (char c in end)
+                        automata.DefineAsFinalState(new State(c.ToString()));
+                }
+
+
+                List<string> lijst = GenerateStrings.GenerateString(8, Alphabet.Text);
+                List<string> accept = new List<string>();
+                List<string> notaccept = new List<string>();
+                foreach (string s in lijst)
+                {
+                    if (automata.AcceptNDFA(s))
+                    {
+                        accept.Add(s);
+                    }
+                    else
+                    {
+                        notaccept.Add(s);
+                    }
+                }
+
+                foreach (string acc in accept)
+                    Accept.Text += (acc + "\n");
+
+                foreach (string nacc in notaccept)
+                    Notaccept.Text += (nacc + "\n");
+
+            }
+
+            //Regex
+            if(IsRegex)
+                regexParser.ParseRegex(rege);
 
             //TODO show Graphiz file
-            Window window = new Window1();
-            window.Show();
+            
         }
 
         private void Quiz_btn_Click(object sender, RoutedEventArgs e)
@@ -246,11 +257,23 @@ namespace FormalMethods
         {
             if((Sender as Button).Name.Equals("Minimize"))
             {
-                
+                if(IsRegex)
+                {
+                    automata = regexParser.GetAutomata();
+                }
+                automata = automata.minimaliseren();
+                Grapher grapher = new Grapher();
+                grapher.CreateGraph(automata, "test");
             }
             else if ((Sender as Button).Name.Equals("DFA"))
             {
-                
+                if (IsRegex)
+                {
+                    automata = regexParser.GetAutomata();
+                }
+                automata = automata.toDFA();
+                Grapher grapher = new Grapher();
+                grapher.CreateGraph(automata, "test");
 
             }
         }

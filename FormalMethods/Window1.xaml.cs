@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +23,13 @@ namespace FormalMethods
             InitializeComponent();
             Height = image.Height;
             Width = image.Width;
-            
+            image.Source = null;
+            Uri resourceUri = new Uri("bin/Debug/netcoreapp3.1/test.dot.png", UriKind.Relative);
+
+            image.Source = new BitmapImage(resourceUri);
+                
+
+
             //image.Source = "test.dot.svg";
         }
     }
