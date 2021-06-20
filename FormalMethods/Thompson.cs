@@ -6,51 +6,42 @@ namespace FormalMethods
 {
     class Thompson
     {
-        private char[] alphabet;
+        
         private Automata<string> automata;
-        public Thompson()
+        public int startState;
+        public int finalState; 
+        public Thompson(char[] alphabet)
         {
-            this.alphabet = new char[27];
+            
             automata = new Automata<string>(alphabet);
-
+            this.startState = 0;
+            this.finalState = 0; 
         }
-
+        
         public int terminaal(int begin, int list, char a)
         {
-            automata.AddTransition(new Transition<string>(begin  + "", a, (list + 1) + ""));
+            if(startState == 0)
+            {
+                this.startState = begin; 
+            }
+            automata.AddTransition(new Transition<string>(new State(begin  + ""), a, new State((list + 1) + "")));
+            this.finalState = list + 1; 
             return list+ 1; 
         }
 
         public int epsilon(int list1, int list2)
         {
-            automata.AddTransition(new Transition<string>(list1 + "", 'ε', list2 + ""));
+            if (startState == 0)
+            {
+                this.startState = list1;
+            }
+            automata.AddTransition(new Transition<string>(new State(list1 + ""), 'ε', new State( list2 + "")));
+            this.finalState = list2; 
             return list2; 
         }
 
 
-        public int dot(int begin, int end, int list, string letters)
-        {
-           
-            //automata.AddTransition(new Transition<string>(begin + "", letters[0], (list + 1) + ""));
-           // list++;
 
-            for (int i = 0; i < letters.Length; i++)
-            {
-                if(i == letters.Length - 1)
-                {
-                    automata.AddTransition(new Transition<string>(list + "", letters[i], end + ""));
-                }
-                else
-                {
-                    automata.AddTransition(new Transition<string>(list + "", letters[i], (list + 1) + ""));
-
-                }
-                list++;
-            }
-            //endEps(end, list);
-
-            return list + 1;
-        }
 
         public int or(int begin, int end, int list)
         {
@@ -135,6 +126,18 @@ namespace FormalMethods
         {
             Grapher grapher = new Grapher();
             grapher.CreateGraph(automata, "test");
+            //give automata
+        }
+
+        public void finishThompson()
+        {
+            automata.DefineAsStartState(this.startState + "");
+            automata.DefineAsFinalState(this.finalState + ""); 
+
+        }
+        public Automata<string> GetAutomata()
+        {
+            return this.automata; 
         }
 
        

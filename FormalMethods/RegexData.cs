@@ -10,11 +10,13 @@ namespace FormalMethods
        
         public List <Regex> regexList;
         public List<string> captureList;
+        public string Alphabet;
         public Thompson Thompson; 
         public RegexData()
         {
             this.regexList = new List<Regex>();
-            this.captureList = new List<string>(); 
+            this.captureList = new List<string>();
+            this.Alphabet = ""; 
         }
 
         public void newRegex(int id, string start, int topLayerId)
@@ -33,11 +35,17 @@ namespace FormalMethods
             return regexList[id].topLayerId; 
         }
 
+        public void addToAlphabet(char c)
+        {
+            this.Alphabet += c; 
+        }
+
        
         public void startThompson()
         {
-            this.Thompson = new Thompson();
+            this.Thompson = new Thompson(this.Alphabet.ToCharArray());
             ThompsonRead(0, 1, 0, 1);
+            Thompson.finishThompson(); 
             Thompson.drawThompson();
         }
         public bool captureClose = false; 

@@ -10,7 +10,8 @@ namespace FormalMethods
         {
            
             int idCounter = 0;
-            int currentId = 0; 
+            int currentId = 0;
+            string affectors = "+*|."; 
            
             RegexData regexdata = new RegexData();
 
@@ -33,6 +34,10 @@ namespace FormalMethods
                         break;                   
                     default: //no special character detected
                         regexdata.addLetter(currentId, c + "");
+                        if (!regexdata.Alphabet.Contains(c) && !affectors.Contains(c))
+                        {
+                            regexdata.addToAlphabet(c); 
+                        }
                         break;
                         
                        
