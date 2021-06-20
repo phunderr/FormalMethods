@@ -28,9 +28,7 @@ namespace FormalMethods
             else if (obj is State)
             {
                 State other = (State)obj;
-                return Name.CompareTo(other.Name) == 0 &&
-                StartState == other.StartState &&
-                EndState == other.EndState;
+                return Name.CompareTo(other.Name) == 0;
             }
 
             return false;
@@ -41,23 +39,23 @@ namespace FormalMethods
             return base.GetHashCode();
         }
 
-        public override string ToString()
+        public string ToString(bool full)
         {
             return $"(name = {Name},Startstate: {StartState}, endstate: {EndState}";
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
 
         public int CompareTo(object obj)
         {
-
-            byte[] selfarr = Encoding.ASCII.GetBytes(Name);
-            int selfval = (int)selfarr[0];
-
             State other = (State)obj;
-            byte[] otherarr = Encoding.ASCII.GetBytes(other.Name);
-            int otherval = (int)otherarr[0];
 
-            return selfval - otherval;
+           return Name.CompareTo(other.Name);
         }
+
+       
     }
 }
