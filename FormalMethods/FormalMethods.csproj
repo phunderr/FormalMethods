@@ -14,12 +14,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="test.dot.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="res\questions.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DotNetGraph" Version="2.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="test.dot.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

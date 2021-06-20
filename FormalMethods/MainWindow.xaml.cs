@@ -102,8 +102,8 @@ namespace FormalMethods
 
 
 
-            //Grapher grapher = new Grapher();
-           // grapher.CreateGraph(automata, "test");
+            Grapher grapher = new Grapher();
+            grapher.CreateGraph(automata, "test");
 
 
 
@@ -181,6 +181,11 @@ namespace FormalMethods
         {
             Window w = popup;
             w.Show();
+
+
+            //TODO show Graphiz file
+            Window window = new Window1();
+            window.Show();
         }
 
         private void Quiz_btn_Click(object sender, RoutedEventArgs e)
