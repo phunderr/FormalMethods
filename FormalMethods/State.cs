@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 
+
+
 namespace FormalMethods
 {
     public class State : IComparable
@@ -9,6 +11,8 @@ namespace FormalMethods
         public bool StartState { get; set; }
         public bool EndState { get; set; }
 
+
+
         public State(string name, bool start, bool end)
         {
             Name = name;
@@ -16,10 +20,14 @@ namespace FormalMethods
             EndState = end;
         }
 
+
+
         public State(string name)
         {
             Name = name;
         }
+
+
 
         public override bool Equals(object obj)
         {
@@ -31,8 +39,12 @@ namespace FormalMethods
                 return Name.CompareTo(other.Name) == 0;
             }
 
+
+
             return false;
         }
+
+
 
         public override int GetHashCode()
         {
@@ -49,7 +61,8 @@ namespace FormalMethods
             return Name;
         }
 
-        public int CompareTo(object obj)
+
+        public override string ToString()
         {
             State other = (State)obj;
 

@@ -32,13 +32,24 @@ namespace FormalMethods
             time.Tick += new EventHandler(Timer_tick);
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
             time.Start();
-            
+
             RegexParser regexParser = new RegexParser();
-            regexParser.ParseRegex("(abc)+"); 
+            if (!regexParser.ParseRegex("a+a|a%(a|bc(ab*))*ab"))
+            {
+                this.Close();
+            }
 
 
 
-            List<string> lijst = GenerateStrings.GenerateString(8, "ab");
+            //regexParser.ParseRegex("(abbaa)*");
+            //regexParser.ParseRegex("aa|bb|ccd*c");
+            //a
+            //regexParser.ParseRegex("abbb");
+            //regexParser.ParseRegex("(ab)*|(bc)+");
+
+
+
+            /*List<string> lijst = GenerateStrings.GenerateString(8, "ab");
 
             foreach (string element in lijst)
             {
@@ -203,7 +214,7 @@ namespace FormalMethods
             grapher.CreateGraph(automata, "test");
 
 
-
+*/
 
         }
 
@@ -235,7 +246,7 @@ namespace FormalMethods
             }
 
 
-            
+
         }
 
         private void RegexButton_Click(object sender, RoutedEventArgs e)

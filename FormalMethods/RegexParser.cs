@@ -6,71 +6,60 @@ namespace FormalMethods
 {
     class RegexParser
     {
-        public void ParseRegex(string regex)
+        public bool ParseRegex(string regex)
         {
-            int startCapture = 0;
-            int countList = 0; 
-            RegexData regexdata = new RegexData(); 
+           
+            int idCounter = 0;
+            int currentId = 0;
+            string affectors = "+*|.";
+            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"^[a-z0-9|()+.*]+$");
+            if (!reg.IsMatch(regex))
+            {
+                return false;
+            }
+            
+
+            int Ocounter = 0;
+            int Ccounter = 0; 
+            
+           
+            RegexData regexdata = new RegexData();
+            regexdata.newRegex(idCounter, "", currentId);
             foreach (char c in regex.ToCharArray())
             {
                 switch (c)
                 {
                     case '(':
-                        startCapture ++; // caputere group started; 
-                        countList++; 
-                        regexdata.newCapture(); 
+                        idCounter++; 
+                        regexdata.newRegex(idCounter, "", currentId);
+                        regexdata.addLetter(currentId,  idCounter + "(");
+                        currentId = idCounter;
+                        Ocounter++; 
                         break;
                     case ')': //Last
-                        regexdata.newRegex(countList); 
-                        startCapture--;
-                        if(startCapture <= 0)
-                        {
-                            regexdata.CaptureClear(); 
-                        }
-                        break;
-                    case '|': //or 
-                        
-                        Affector affector = Affector.or;
-                        regexdata.fillAffector(affector);
-                        break;
-                    case '+': //+ 
-                      
-                        Affector affector2 = Affector.plus;
-                        regexdata.fillAffector(affector2);
-                        break;
-                    case '*': //*
-                        
-                        Affector affector3 = Affector.star;
-                        regexdata.fillAffector(affector3);
-                        break;
-                    case '.': //.
-                       
-                        Affector affector4 = Affector.dot;
-                        regexdata.fillAffector(affector4);
-                        break;
+                        currentId = regexdata.getTopLayer(currentId);
+                        Ccounter++;
+                        break;                   
                     default: //no special character detected
-                        if (startCapture > 0)
+                        regexdata.addLetter(currentId, c + "");
+                        if (!regexdata.Alphabet.Contains(c) && !affectors.Contains(c))
                         {
-                            regexdata.addLettertoCapture(c, countList);
-                            //(ab(cd)*)+
-                        }
-                        else
-                        {
-                            regexdata.newCapture();
-                            countList++;
-                            regexdata.addLettertoCapture(c, countList);
-                            regexdata.newRegex(countList);
-                            regexdata.CaptureClear();
-
-                            //aabaa
+                            regexdata.addToAlphabet(c); 
                         }
                         break;
+                        
                        
                 }
             }
+            if(Ocounter != Ccounter)
+            {
+                return false; //bad regex
+            }
+           
+            regexdata.startThompson();
+            return true; 
         }
     }
 }
 
-// (ab(cd)*)+ aabba; 
-// aabbb* 
+

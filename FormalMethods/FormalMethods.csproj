@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DFA.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetGraph" Version="2.6.0" />
   </ItemGroup>
 

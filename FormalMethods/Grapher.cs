@@ -102,6 +102,7 @@ namespace FormalMethods
 
 
 
+
             var dot = graph.Compile();
             dot = dot.Insert(12 + name.Length, "rankdir=LR;");
             File.WriteAllText(name + ".dot", dot);

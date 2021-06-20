@@ -7,30 +7,53 @@ namespace FormalMethods
     class Regex
     {
         public string groupOfLetters { get; set; }
-        public string remainder { get; set; }
-        public Affector affector { get; set; }
+        public int layerId { get; set; }
 
-        public Regex()
+        public int topLayerId { get; set; }
+
+        public List<string> Orlist { get; set; }
+
+
+        public Regex(int id, string start, int topLayerId)
         {
-            this.affector = new Affector(); 
-
+            this.layerId = id;
+            this.groupOfLetters = start;
+            this.topLayerId = topLayerId; 
         }
         public Regex(string groupOfLetters)
         {
             this.groupOfLetters = groupOfLetters; 
         }
       
-        public Regex(string groupOfLetters, Affector affector)
+        public void addLetter(string letter)
         {
-            this.groupOfLetters = groupOfLetters;
-            this.affector = affector; 
+            this.groupOfLetters += letter; 
         }
 
-        public Regex(string groupOfLetters, string remainder, Affector affector)
+        public void checkOr()
         {
-            this.groupOfLetters = groupOfLetters;
-            this.remainder = remainder;
-            this.affector = affector; 
+            Orlist = new List<string>();
+            Orlist.Add("");
+            int count = 0;
+            foreach (char c in this.groupOfLetters)
+            {
+                switch (c)
+                {
+                    case '|':
+                        Orlist.Add("");
+                        count++;
+                        break;
+
+                    default: //no special character detected
+                        Orlist[count] += c;
+                        break;
+
+
+                }
+            }
+
         }
+
+
     }
 }
