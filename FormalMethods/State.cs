@@ -62,7 +62,7 @@ namespace FormalMethods
         }
 
 
-        public override string ToString()
+        public int CompareTo(object obj)
         {
             State other = (State)obj;
 
