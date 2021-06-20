@@ -8,19 +8,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace FormalMethods
 {
     /// <summary>
-    /// Interaction logic for QuizOpenAnswerView.xaml
+    /// Interaction logic for PopUp.xaml
     /// </summary>
-    public partial class QuizOpenAnswerView : UserControl
+    public partial class PopUp : Window
     {
-        public QuizOpenAnswerView(Questions question)
+
+        public event EventHandler ActionEvent;
+
+        public PopUp()
         {
             InitializeComponent();
+        }
+
+        private void DFA_Click(object sender, RoutedEventArgs e)
+        {
+            ActionEvent?.Invoke(sender, e);
         }
     }
 }

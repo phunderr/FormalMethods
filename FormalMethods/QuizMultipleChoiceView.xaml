@@ -8,9 +8,9 @@
              d:DesignHeight="125" d:DesignWidth="572"
              Background="White">
     <Grid>
-        <Button  FontSize="18" Click="checkAnswer" Name="ans1" Width="200" Height="50" Content="Answer 1" Tag="0" Margin="0,0,372,75" />
-        <Button  FontSize="18" Click="checkAnswer" Name="ans2" Width="200" Height="50" Content="Answer 2" Tag="0" Margin="0,75,372,0" />
-        <Button  FontSize="18" Click="checkAnswer" Name="ans3" Width="200" Height="50" Content="Answer 3" Tag="0" Margin="372,0,0,75" />
-        <Button  FontSize="18" Click="checkAnswer" Name="ans4" Width="200" Height="50" Content="Answer 4" Tag="0" Margin="372,75,0,0" />
+        <Button  FontSize="18" Click="CheckAnswer" Name="ans1" Width="200" Height="50" Content="Answer 1" Tag="0" Margin="0,0,372,75" />
+        <Button  FontSize="18" Click="CheckAnswer" Name="ans3" Width="200" Height="50" Content="Answer 3" Tag="0" Margin="0,75,372,0" />
+        <Button  FontSize="18" Click="CheckAnswer" Name="ans2" Width="200" Height="50" Content="Answer 2" Tag="0" Margin="372,0,0,75" />
+        <Button  FontSize="18" Click="CheckAnswer" Name="ans4" Width="200" Height="50" Content="Answer 4" Tag="0" Margin="372,75,0,0" />
     </Grid>
 </UserControl>

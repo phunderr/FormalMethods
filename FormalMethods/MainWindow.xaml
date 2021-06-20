@@ -82,8 +82,8 @@
             <TextBox Width="200" x:Name="Alfabet"/>
             <Button x:Name="Start" Content="RUN"  Margin="70, 0, 0 , 0" Click="Start_Click"/>
         </StackPanel>
-        <ScrollViewer Margin="0,255,4,0" Grid.RowSpan="2">
-            <StackPanel Grid.Row="1" x:Name="InputPanel" Height="224" VerticalAlignment="Bottom"  >
+        <ScrollViewer Margin="0,35,4,0" Grid.Row="1">
+            <StackPanel Grid.Row="1" x:Name="InputPanel"  VerticalAlignment="Top"  >
                 <StackPanel.Resources>
                     <Style TargetType="UserControl">
                         <Setter Property="Margin" Value="300, 0, 30, 0"/>

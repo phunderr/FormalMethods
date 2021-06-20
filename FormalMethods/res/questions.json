@@ -1,0 +1,39 @@
+[
+    {
+        "Question" : "Does the regex ab|b allow for the word abb",
+        "answer" : "ans2",
+        "ans1" : "true",
+        "ans2" : "false",
+        "type" : "m2"
+    },
+    {
+        "Question" : "Does the regex (abbb*b)* allow for the word abbbbbbbbbb",
+        "answer" : "ans1",
+        "ans1" : "true",
+        "ans2" : "false",
+        "type" : "m2"
+    },
+    {
+        "Question" : "When a Automata does not contain an epsilon it is a DFA",
+        "answer" : "ans4",
+        "ans1" : "true",
+        "ans2" : "false",
+        "ans3" : "false not enough info",
+        "ans4" : "unsure not enough info",
+        "type" : "m4"
+    },
+    {
+        "Question" : "Does the regex ab|b allow for the word abb",
+        "answer" : "ans2",
+        "ans1" : "true",
+        "ans2" : "false",
+        "type" : "m2"
+    },
+    {
+        "Question" : "Does the regex ab|b allow for the word abb",
+        "answer" : "ans2",
+        "ans1" : "true",
+        "ans2" : "false",
+        "type" : "m2"
+    }
+]

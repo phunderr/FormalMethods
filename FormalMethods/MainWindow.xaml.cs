@@ -23,6 +23,8 @@ namespace FormalMethods
     {
 
         private List<UserControl> Input { get; set; }
+        private PopUp popup = new PopUp();
+
 
         public MainWindow()
         {
@@ -34,9 +36,9 @@ namespace FormalMethods
             time.Start();
             
             RegexParser regexParser = new RegexParser();
-            regexParser.ParseRegex("(abc)+"); 
+            regexParser.ParseRegex("(abc)+");
 
-
+            popup.ActionEvent += DFAOrMin;
 
             List<string> lijst = GenerateStrings.GenerateString(8, "ab");
 
@@ -177,12 +179,28 @@ namespace FormalMethods
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
-
+            Window w = popup;
+            w.Show();
         }
 
         private void Quiz_btn_Click(object sender, RoutedEventArgs e)
         {
+            Window quiz = new Quiz();
+            quiz.Show();
+        }
 
+
+        private void DFAOrMin(object Sender, EventArgs e)
+        {
+            if((Sender as Button).Name.Equals("Minimize"))
+            {
+                
+            }
+            else if ((Sender as Button).Name.Equals("DFA"))
+            {
+                
+
+            }
         }
     }
 }
