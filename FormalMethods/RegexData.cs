@@ -63,7 +63,6 @@ namespace FormalMethods
                 int begin2 = begin;
                 int end2 = 0; 
                 string before = "";
-                
                 for (int i =0; i < or.Length; i++)
                 {
                     if(i >= (or.Length- 1))
@@ -84,7 +83,7 @@ namespace FormalMethods
                             }           
                             list = Thompson.star(begin2, end2, list);
                             int newEnd = list; 
-                          
+                            
                             if (end2 > 0)
                             {
                                 list = checkCap(before, list - 2, list-1, list);
@@ -106,20 +105,19 @@ namespace FormalMethods
                             }
                             list = Thompson.plus(begin2, end2, list);
                             int newEnd2 = list;
-                         
+                           
                             if (end2 > 0)
                             {
                                 list = checkCap(before, list - 1, list, list);
                             }
                             else
                             {
-                                list = checkCap(before, list - 2, list - 1, list);
+                                list = checkCap(before, list - 2, list -1, list);
                             }
                             begin2 = newEnd2;
                             before = "";
                             break;
                         case '.':
-                            // Do nothing
                             break;
                         default:
                             before += or[i];
@@ -130,6 +128,13 @@ namespace FormalMethods
                 if (before.Length > 0)
                 {
                     list = printLetters(before, begin2, end2 -1, list, false);
+                    if (before.EndsWith('('))
+                    {
+                        int capId = int.Parse(before[before.Length - 2].ToString());
+                        list = ThompsonRead(capId, list  , end2 , list);
+                        captureClose = true;
+                    }
+
                     before = ""; 
                 }
             }
@@ -138,11 +143,12 @@ namespace FormalMethods
 
         public int printLetters(string before, int begin, int end, int list, bool affector)
         {
-             
+ 
             if (before.EndsWith('(') && before.Length > 2)
             {
                 if (before.Length > 2)
                 {
+                    
                     list = Thompson.terminaal(begin, list, before[0]);
                     for (int i = 1; i < before.Length - 2; i++)
                     {
@@ -155,20 +161,15 @@ namespace FormalMethods
             }
             else if(before.Length > 1 && !before.EndsWith('('))
             {
- 
+             
+                
                 if (affector)
                 {
                     if (before.Length <= 2)
                     {
                         
-                        if (end > 0 && before.Length > 1)
-                        {
-                            Thompson.terminaal(begin, end, before[0]);
-                        }
-                        else if (before.Length > 1)
-                        {
-                            list = Thompson.terminaal(begin, list, before[0]);
-                        }
+                       
+                        list = Thompson.terminaal(begin, list, before[0]);
                     }
                     else
                     {
@@ -209,7 +210,10 @@ namespace FormalMethods
             }
             else if (!affector)
             {
+
                 Thompson.terminaal(begin, end, before[0]);
+               
+                
             }
 
             return list; 
