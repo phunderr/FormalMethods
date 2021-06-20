@@ -51,20 +51,62 @@ namespace FormalMethods
             }
 
             char[] alphabet = { 'a', 'b' };
+            //Automata<string> automata = new Automata<string>(alphabet);
+
+
+            //List<string> valid = new List<string>();
+            //List<string> invalid = new List<string>();
+
+
+            //automata.AddTransition(new Transition<string>(new State("S"), 'a', new State("A")));
+            //automata.AddTransition(new Transition<string>(new State("S"), 'a', new State("S")));
+
+            //automata.AddTransition(new Transition<string>(new State("A"), 'b', new State("F")));
+
+            //automata.DefineAsStartState(new State("S"));
+            //automata.DefineAsFinalState(new State("F"));
+
+            //Automata<string> am2 = automata.toDFA();
+
+            //am2.minimaliseren();
+
             Automata<string> automata = new Automata<string>(alphabet);
 
 
             List<string> valid = new List<string>();
             List<string> invalid = new List<string>();
 
+
+            automata.AddTransition(new Transition<string>(new State("1"), 'a', new State("2")));
+            automata.AddTransition(new Transition<string>(new State("1"), 'b', new State("2")));
+
+            automata.AddTransition(new Transition<string>(new State("1"), 'b', new State("3")));
+
+            automata.AddTransition(new Transition<string>(new State("2"), 'a', new State("3")));
+            automata.AddTransition(new Transition<string>(new State("2"), 'b', new State("4")));
+            automata.AddTransition(new Transition<string>(new State("2"), 'ε', new State("4")));
+
+            automata.AddTransition(new Transition<string>(new State("3"), 'a', new State("2")));
             
 
-            
+            automata.AddTransition(new Transition<string>(new State("4"), 'a', new State("2")));
+            automata.AddTransition(new Transition<string>(new State("4"), 'a', new State("5")));
 
+            automata.AddTransition(new Transition<string>(new State("5"), 'b', new State("5")));
+            automata.AddTransition(new Transition<string>(new State("5"), 'ε', new State("3")));
+
+            automata.DefineAsStartState(new State("1"));
+            automata.DefineAsFinalState(new State("2"));
+            automata.DefineAsFinalState(new State("3"));
+
+            automata.AcceptNDFA("aaaaa");
+            Automata<string> am2 = automata.toDFA();
+
+           
 
 
             Grapher grapher = new Grapher();
-            grapher.CreateGraph(automata, "test");
+            grapher.CreateGraph(am2, "test");
 
 
 
@@ -144,6 +186,49 @@ namespace FormalMethods
             Window w = popup;
             w.Show();
 
+            Automata<string> automata = new Automata<string>(Alphabet.Text.ToCharArray());
+            //Grammar to automata
+            foreach (Object control in InputPanel.Children)
+            {
+                if (control.GetType().Equals(new TransitionView()))
+                {
+                    char[] c = (control as TransitionView).Character.Text.ToCharArray();
+                    automata.AddTransition(new Transition<string>(new State((control as TransitionView).FromState.Text), c[0], new State((control as TransitionView).ToState.Text)));
+
+                }
+            }
+            if (InputPanel.Children[0].GetType().Equals(new TransitionView()))
+            {
+                char[] start = StartStateInput.Text.ToCharArray();
+                foreach (char c in start)
+                    automata.DefineAsStartState(new State(c.ToString()));
+
+                char[] end = EndStatesInput.Text.ToCharArray();
+                foreach (char c in end)
+                    automata.DefineAsFinalState(new State(c.ToString()));
+            }
+
+
+            List<string> lijst = GenerateStrings.GenerateString(8, Alphabet.Text);
+            List<string> accept = new List<string>();
+            List<string> notaccept = new List<string>();
+            foreach (string s in lijst)
+            {
+                if (automata.AcceptNDFA(s))
+                {
+                    accept.Add(s);
+                }
+                else
+                {
+                    notaccept.Add(s);
+                }
+            }
+
+            foreach (string acc in accept)
+                Accept.Text += (acc + "\n");
+            
+            foreach (string nacc in notaccept)
+                Notaccept.Text += (nacc + "\n");
 
             //TODO show Graphiz file
             Window window = new Window1();

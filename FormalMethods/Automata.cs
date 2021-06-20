@@ -80,17 +80,7 @@ namespace FormalMethods
                 Console.WriteLine(transition);
         }
 
-        //public List<T> GetToStates(T from, char symbol)
-        //{
-        //    List<T> toStates = new List<T>();
-
-        //    foreach (Transition<T> t in Transitions)
-        //        if (t.from.Equals(from) && t.symbol.Equals(symbol))
-        //            toStates.Add(t.to);
-
-        //    return toStates;
-        //}
-
+       
         public Dictionary<string, List<Transition<string>>> buildgraph()
         {
             
@@ -112,6 +102,29 @@ namespace FormalMethods
                 }
                 return (Dictionary<string, List<Transition<string>>>)map;
             
+        }
+
+        public Dictionary<string, List<Transition<string>>> buildreversegraph()
+        {
+
+            IDictionary<string, List<Transition<string>>> map = new Dictionary<string, List<Transition<string>>>();
+            foreach (Transition<string> t in Transitions)
+            {
+                if (map.ContainsKey(t.to.ToString()))
+                {
+                    List<Transition<string>> trans = map[t.to.ToString()];
+                    trans.Add(t);
+                    map[t.to.ToString()] = trans;
+                }
+                else
+                {
+                    List<Transition<string>> trans = new List<Transition<string>>();
+                    trans.Add(t);
+                    map.Add(t.to.ToString(), trans);
+                }
+            }
+            return (Dictionary<string, List<Transition<string>>>)map;
+
         }
 
         public bool AcceptDFA(string input)
@@ -180,8 +193,7 @@ namespace FormalMethods
                             // diverse letters dienen nog afgevangen te worden, transition met meerdere zelfde letters
                             foreach (Transition<string> transition in states)
                             {
-                                
-
+ 
                                 if (transition.from.Equals(currentState) && transition.symbol.Equals(curr_symbol))
                                 {
                                     currentState = transition.to;
@@ -190,7 +202,7 @@ namespace FormalMethods
                                 else if (transition.from.Equals(currentState) && transition.symbol.Equals('ε')) 
                                 {
                                     List<Transition<string>> s1 = graph[transition.to.ToString()];
-                                    // diverse letters dienen nog afgevangen te worden, transition met meerdere zelfde letters
+                                
                                     foreach (Transition<string> t1 in s1)
                                     {
 
@@ -209,12 +221,11 @@ namespace FormalMethods
                             }
 
                         }
-                        
-
 
                     }
                     else
                     {
+                        
                         Debug.WriteLine(curr_symbol + "is not in alphabet defined");
                     }
                 }
@@ -227,13 +238,8 @@ namespace FormalMethods
             return validpath;
         }
 
-        //public List<Transition<string>> Gettransitionpath(char symbol, string state,List<Transition<string>> graph)
-        //{
-        //    List<Transition<string>> path = new List<Transition<string>>();
-        //    foreach()
+    
 
-
-        //}
 
 
         public bool isDFA() 
@@ -277,6 +283,7 @@ namespace FormalMethods
             {
                 t.reverse();
             }
+            
         }
 
         private static List<string> GetCombinations(List<string> elements)
@@ -298,7 +305,7 @@ namespace FormalMethods
         {
             Automata<string> dfa = new Automata<string>(Symbols);
             Dictionary<string, List<Transition<string>>> graph = buildgraph();
-            Dictionary<string, List<Transition<string>>> dfagraph = new Dictionary<string, List<Transition<string>>>();
+            
 
             List<string> liststate = new List<string>();
             
@@ -344,14 +351,101 @@ namespace FormalMethods
 
 
             List<Transition<string>> failedstates = GetfailedStates(graph, cleanedstate);
+            foreach (Transition<string> failedt in failedstates) 
+            {
+                dfa.Transitions.Add(failedt);
+            }
+            //vind iedere state waar bijv. a naar toegaat. bouw een nieuwe transitie op naar de nieuwe locatie
+            List<Transition<string>> correctstate = new List<Transition<string>>();
+            foreach (char c in Symbols)
+            {
+                foreach (State s in dfa.States)
+                {
+                    List<Transition<string>> statetransitions = new List<Transition<string>>();
+                    List<string> words = new List<string>(s.Name.Split(','));
+                    foreach (string word in words)
+                    {
+                        if (graph.ContainsKey(word))
+                        {
+                            //goodstate bevat collectie van alle transaction van state word
+                            List<Transition<string>> goodstate = graph[word];
+                            List<string> symbolstates = new List<string>();
 
 
+                            foreach (Transition<string> transition in goodstate)
+                            {
+                                if (transition.symbol.Equals(c))
+                                {
+                                    symbolstates.Add(transition.to.ToString());
+                                }
+
+                            }
+                            if (symbolstates.Count > 0)
+                            {
+                                string combstate = Getcombinedstringstates(cleanedstate, symbolstates);
+                                symbolstates.Clear();
+                                correctstate.Add(new Transition<string>(new State(s.Name), c, new State(combstate)));
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+            foreach (Transition<string> correct in correctstate)
+            {
+                dfa.Transitions.Add(correct);
+            }
+
+
+            dfa.RemoveInaccesableStates();
 
             return dfa;
+        }
 
+        public void RemoveInaccesableStates() 
+        {
+            
+            Dictionary<string, List<Transition<string>>> graph = buildreversegraph();
+            List<State> removablestates = new List<State>();
+            List<Transition<string>> removavletransitions = new List<Transition<string>>();
+            foreach (State s in States)
+            {
+                if (!graph.ContainsKey(s.Name) && !StartStates.Contains(s)) 
+                {
+                    removablestates.Add(s);
+                }
+            }
+
+            foreach (State rems in removablestates) 
+            {
+                foreach (Transition<string> rmt in Transitions) 
+                {
+                    if (rmt.from.Name == rems.Name) 
+                    {
+                        removavletransitions.Add(rmt);
+                    }
+                }
+            }
+
+            foreach (State rms in removablestates) 
+            {
+                States.Remove(rms);
+            }
+
+            foreach (Transition<string> rmt in removavletransitions)
+            {
+                Transitions.Remove(rmt);
+            }
 
         }
-        List<Transition<string>> GetfailedStates(Dictionary<string, List<Transition<string>>> graph, HashSet<string> states) 
+
+
+
+        public List<Transition<string>> GetfailedStates(Dictionary<string, List<Transition<string>>> graph, HashSet<string> states) 
         {
             List<Transition<string>> failedtransition = new List<Transition<string>>();
 
@@ -374,6 +468,10 @@ namespace FormalMethods
                     {
                         if (!trans.symbol.Equals('ε'))
                             diff.Remove(trans.symbol);
+                        else 
+                        {
+                            
+                        }
                     }
                     if (diff.Count > 0)
                     {
@@ -395,7 +493,7 @@ namespace FormalMethods
 
         public string Getcombinedstringstates(HashSet<string> cleanedstate, List<string> states)
         {
-           
+            
             foreach (string rawstate in cleanedstate)
             {
                 List<string> words = new List<string>(rawstate.Split(','));
@@ -420,7 +518,29 @@ namespace FormalMethods
         }
 
 
+        public Automata<string> minimaliseren() 
+        {
+            if (isDFA())
+            {
+                reverse();
+                Automata<string> gen = toDFA();
+                gen.reverse();
+                Automata<string> gen2 = gen.toDFA();
 
+                return gen2;
+
+            }
+            else 
+            {
+                Automata<string> gen = toDFA();
+                gen.reverse();
+                Automata<string> gen1 = gen.toDFA();
+                gen1.reverse();
+                Automata<string> gen2 = gen1.toDFA();
+
+                return gen2;
+            }
+        }
 
 
 
