@@ -96,7 +96,6 @@ namespace FormalMethods
             epsilon(list2 - 1, list);
             epsilon(list - 1, list2);
            
-
             return list;
         }
 
@@ -114,7 +113,7 @@ namespace FormalMethods
                 list++;
                  
                 epsilon(list - 1, list);
-                if(this.finalState <= 0)
+                if(this.finalState <= 0 | !endCheck)
                 {
                     this.endCheck = true;
                     this.finalState = list;
