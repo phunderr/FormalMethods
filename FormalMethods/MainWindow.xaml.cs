@@ -23,8 +23,10 @@ namespace FormalMethods
     {
 
         private List<UserControl> Input { get; set; }
+        private PopUp popup = new PopUp();
 
-        public MainWindow()
+
+         public MainWindow()
         {
             Input = new List<UserControl>();
             InitializeComponent();
@@ -32,24 +34,16 @@ namespace FormalMethods
             time.Tick += new EventHandler(Timer_tick);
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
             time.Start();
-
+            
             RegexParser regexParser = new RegexParser();
             if (!regexParser.ParseRegex("a+a|a(a|bc(ab*))*ab"))
             {
                 this.Close();
             }
 
+            popup.ActionEvent += DFAOrMin;
 
-
-            //regexParser.ParseRegex("(abbaa)*");
-            //regexParser.ParseRegex("aa|bb|ccd*c");
-            //a
-            //regexParser.ParseRegex("abbb");
-            //regexParser.ParseRegex("(ab)*|(bc)+");
-
-
-
-            /*List<string> lijst = GenerateStrings.GenerateString(8, "ab");
+            List<string> lijst = GenerateStrings.GenerateString(8, "ab");
 
             foreach (string element in lijst)
             {
@@ -59,154 +53,55 @@ namespace FormalMethods
             char[] alphabet = { 'a', 'b' };
             Automata<string> automata = new Automata<string>(alphabet);
 
+            automata.AddTransition(new Transition<string>("0", 'a', "1"));
+            automata.AddTransition(new Transition<string>("0", 'b', "4"));
+
+            automata.AddTransition(new Transition<string>("1", 'a', "4"));
+            automata.AddTransition(new Transition<string>("1", 'b', "2"));
+
+            automata.AddTransition(new Transition<string>("2", 'a', "4"));
+            automata.AddTransition(new Transition<string>("2", 'b', "3"));
+
+            automata.AddTransition(new Transition<string>("3", 'a', "3"));
+            automata.AddTransition(new Transition<string>("3", 'b', "3"));
+
+            automata.AddTransition(new Transition<string>("4", 'a', "4"));
+            automata.AddTransition(new Transition<string>("4", 'b', "5"));
+
+            automata.AddTransition(new Transition<string>("5", 'a', "6"));
+            automata.AddTransition(new Transition<string>("5", 'b', "5"));
+
+            automata.AddTransition(new Transition<string>("6", 'a', "7"));
+            automata.AddTransition(new Transition<string>("6", 'b', "5"));
+
+            automata.AddTransition(new Transition<string>("7", 'a', "4"));
+            automata.AddTransition(new Transition<string>("7", 'b', "8"));
+
+            automata.AddTransition(new Transition<string>("8", 'a', "4"));
+            automata.AddTransition(new Transition<string>("8", 'b', "5"));
+
+            automata.DefineAsStartState("0");
+
+            automata.DefineAsFinalState("3");
+            automata.DefineAsFinalState("8");
 
 
+            List<string> valid = new List<string>();
+            List<string> invalid = new List<string>();
 
-            automata.AddTransition(new Transition<string>(new State("0"), 'a', new State("1")));
-            automata.AddTransition(new Transition<string>(new State("0"), 'b', new State("4")));
-
-            automata.AddTransition(new Transition<string>(new State("1"), 'a', new State("4")));
-            automata.AddTransition(new Transition<string>(new State("1"), 'b', new State("2")));
-            
-            automata.AddTransition(new Transition<string>( new State("2"), 'a',new State("4")));
-            automata.AddTransition(new Transition<string>(new State("2"), 'b', new State("3")));
-
-            automata.AddTransition(new Transition<string>(new State("3"), 'a', new State("3")));
-            automata.AddTransition(new Transition<string>(new State("3"), 'b', new State("3")));
-
-            automata.AddTransition(new Transition<string>(new State("4"), 'a', new State("4")));
-            automata.AddTransition(new Transition<string>(new State("4"), 'b', new State("5")));
-
-            automata.AddTransition(new Transition<string>(new State("5"), 'a', new State("6")));
-            automata.AddTransition(new Transition<string>(new State("5"), 'b', new State("5")));
-
-            automata.AddTransition(new Transition<string>(new State("6"), 'a', new State("7")));
-            automata.AddTransition(new Transition<string>(new State("6"), 'b', new State("5")));
-            
-
-            automata.AddTransition(new Transition<string>(new State("7"), 'a', new State("4")));
-            automata.AddTransition(new Transition<string>(new State("7"), 'b', new State("8")));
-
-            automata.AddTransition(new Transition<string>(new State("8"), 'a', new State("4")));
-            automata.AddTransition(new Transition<string>(new State("8"), 'b', new State("5")));
-
-            automata.DefineAsStartState(new State("0"));
-
-            automata.DefineAsFinalState(new State("3"));
-            automata.DefineAsFinalState(new State("8"));
-
-
-
-            
-
-
-
-            Automata<string> a2 = new Automata<string>(alphabet);
-
-            a2.AddTransition(new Transition<string>(new State("0"), 'a', new State("1")));
-            a2.AddTransition(new Transition<string>(new State("0"), 'b', new State("a")));
-
-            a2.AddTransition(new Transition<string>(new State("1"), 'a', new State("1")));
-            a2.AddTransition(new Transition<string>(new State("1"), 'b', new State("0")));
-
-            
-            a2.DefineAsStartState(new State("0"));
-
-            a2.DefineAsFinalState(new State("0"));
-
-            
-
-
-
-
-
-            Automata<string> a3 = new Automata<string>(alphabet);
-
-            a3.AddTransition(new Transition<string>(new State("S"), 'a', new State("S")));
-            a3.AddTransition(new Transition<string>(new State("S"), 'a', new State("A")));
-
-            a3.AddTransition(new Transition<string>(new State("A"), 'b', new State("F")));
-            a3.DefineAsStartState(new State("S"));
-
-            a3.DefineAsFinalState(new State("F"));
-
-            a3.toDFA();
-
-            //List<string> valid = new List<string>();
-            //List<string> invalid = new List<string>();
-
-            //foreach (string test in lijst) 
-            //{
-            //    if (automata.AcceptDFA(test)) 
-            //    {
-            //        valid.Add(test);
-            //    }
-            //    else 
-            //    {
-            //        invalid.Add(test);
-            //    }
-            //}
-
-
-
-
-            Debug.WriteLine("Valid 1 CHECK AND 2");
-            List<string> validAND = new List<string>();
-            List<string> invalidAND = new List<string>();
-
-            foreach (string test in lijst)
+            foreach (string test in lijst) 
             {
-                if (Checker.AND(automata, a2,test))
+                if (automata.Accept(test)) 
                 {
-                    validAND.Add(test);
+                    valid.Add(test);
                 }
-                else
+                else 
                 {
-                    invalidAND.Add(test);
+                    invalid.Add(test);
                 }
             }
 
-            foreach (string s in validAND) 
-            {
-                Debug.WriteLine("Valid: "+ s);
-            }
-
-            foreach (string s in invalidAND)
-            {
-                Debug.WriteLine("inValid: " + s);
-            }
-
-
-            Debug.WriteLine("Valid 1 CHECK OR 2");
-            List<string> validOR = new List<string>();
-            List<string> invalidOR = new List<string>();
-
-            foreach (string test in lijst)
-            {
-                if (Checker.OR(automata, a2, test))
-                {
-                    validOR.Add(test);
-                }
-                else
-                {
-                    invalidOR.Add(test);
-                }
-            }
-
-
-            foreach (string s in validOR)
-            {
-                Debug.WriteLine("Valid: " + s);
-            }
-
-            foreach (string s in invalidOR)
-            {
-                Debug.WriteLine("inValid: " + s);
-            }
-
-            Debug.WriteLine("is DFA?" + automata.isDFA());
-
-            automata.reverse();
+            
 
 
 
@@ -214,9 +109,10 @@ namespace FormalMethods
             grapher.CreateGraph(automata, "test");
 
 
-*/
+
 
         }
+            
 
         private void Timer_tick(object sender, EventArgs e)
         {
@@ -283,6 +179,37 @@ namespace FormalMethods
             UserControl control = new TransitionView();
             Input.Add(control);
             InputPanel.Children.Add(control);
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            Window w = popup;
+            w.Show();
+
+
+            //TODO show Graphiz file
+            Window window = new Window1();
+            window.Show();
+        }
+
+        private void Quiz_btn_Click(object sender, RoutedEventArgs e)
+        {
+            Window quiz = new Quiz();
+            quiz.Show();
+        }
+
+
+        private void DFAOrMin(object Sender, EventArgs e)
+        {
+            if((Sender as Button).Name.Equals("Minimize"))
+            {
+                
+            }
+            else if ((Sender as Button).Name.Equals("DFA"))
+            {
+                
+
+            }
         }
     }
 }

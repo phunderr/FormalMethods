@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FormalMethods"
         mc:Ignorable="d"
-        Title="MainWindow" Height="526" Width="941">
+        Title="Formal methods" Height="526" Width="941">
     <Window.Resources>
         <Style x:Key="MyRadioButton" TargetType="{x:Type RadioButton}">
             
@@ -51,26 +51,39 @@
                     <RadioButton GroupName="Input" x:Name="AutomataBox" VerticalAlignment="Center"/>
                     <Label Content=" Json "/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button  Content="Start quiz" x:Name="Quiz_btn"  VerticalAlignment="Center" Margin="7, 0, 0, 0" Width="85" Click="Quiz_btn_Click"/>
+                    
+                </StackPanel>
                 
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="0, 60, 0, 0">
+            <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Margin" Value="20, 0, 100, 0"/>
                     </Style>
                 </StackPanel.Resources>
                 <Button x:Name="RegexButton" Content="Regex" FontSize="16" Visibility="Hidden" Click="RegexButton_Click" />
-                <Button x:Name="AutomataButton" Content="Automata" FontSize="16" Visibility="Hidden" Click="AutomataButton_Click" />
+                <Button x:Name="AutomataButton" Content="Json" FontSize="16" Visibility="Hidden" Click="AutomataButton_Click" />
                 <Button x:Name="GrammarButton" Content="Grammar" FontSize="16" Visibility="Hidden" Click="GrammarButton_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
+                <Label Content="StartStates: " Margin="10, 0, 0, 0"/>
+                <TextBox Width="150" x:Name="StartStateInput"/>
+
+                <Label Content="EndStates: " Margin="10, 0, 0, 0"/>
+                <TextBox Width="150" x:Name="EndStatesInput"/>
+
             </StackPanel>
             
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Height="30" VerticalAlignment="Top">
             <Label Content="AlfaBet:" Margin="10, 0, 20, 0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200" x:Name="Alfabet"/>
+            <Button x:Name="Start" Content="RUN"  Margin="70, 0, 0 , 0" Click="Start_Click"/>
         </StackPanel>
-        <ScrollViewer Margin="0,255,4,0" Grid.RowSpan="2">
-            <StackPanel Grid.Row="1" x:Name="InputPanel" Height="224" VerticalAlignment="Bottom"  >
+        <ScrollViewer Margin="0,35,4,0" Grid.Row="1">
+            <StackPanel Grid.Row="1" x:Name="InputPanel"  VerticalAlignment="Top"  >
                 <StackPanel.Resources>
                     <Style TargetType="UserControl">
                         <Setter Property="Margin" Value="300, 0, 30, 0"/>

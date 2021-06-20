@@ -10,11 +10,15 @@ using System.Text;
 
 
 
+
+
 namespace FormalMethods
 {
     class Grapher
     {
         StringBuilder batfile = new StringBuilder();
+
+
 
 
 
@@ -27,12 +31,16 @@ namespace FormalMethods
 
 
 
+
+
         public void CreateGraph(Automata<string> automata, string name)
         {
             var graph = new DotGraph(name, true);
             List<DotNode> dotNodes = new List<DotNode>();
 
-         
+
+
+
             foreach (State node in automata.States)
             {
                 DotNode graphnode;
@@ -47,9 +55,13 @@ namespace FormalMethods
                     Height = 0.5f
                 };
 
+
+
                 dotNodes.Add(graphnode);
 
             }
+
+
 
 
 
@@ -68,6 +80,8 @@ namespace FormalMethods
 
 
 
+
+
                 if (automata.FinalStates.Contains(new State(node.Identifier)))
                 {
                     node.Shape = DotNodeShape.DoubleCircle;
@@ -80,8 +94,12 @@ namespace FormalMethods
 
 
 
+
+
             foreach (Transition<string> trans in automata.Transitions)
             {
+
+
 
 
 
@@ -103,6 +121,10 @@ namespace FormalMethods
 
 
 
+
+
+
+
             var dot = graph.Compile();
             dot = dot.Insert(12 + name.Length, "rankdir=LR;");
             File.WriteAllText(name + ".dot", dot);
@@ -110,7 +132,7 @@ namespace FormalMethods
             {
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.FileName = ("dot");
-                process.StartInfo.Arguments = $"-T svg {name}.dot -O {name}";
+                process.StartInfo.Arguments = $"-T png {name}.dot -O {name}";
                 process.Start();
             }
             //    batfile.AppendLine($"dot -T svg {name}.dot -O {name}");
