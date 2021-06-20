@@ -6,18 +6,24 @@ namespace FormalMethods
 {
     class RegexParser
     {
-        public void ParseRegex(string regex)
+        public bool ParseRegex(string regex)
         {
            
             int idCounter = 0;
             int currentId = 0;
-            string affectors = "+*|."; 
+            string affectors = "+*|.";
+            System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"^[a-z0-9|()+.*]+$");
+            if (!reg.IsMatch(regex))
+            {
+                return false;
+            }
+            
+
+            int Ocounter = 0;
+            int Ccounter = 0; 
+            
            
             RegexData regexdata = new RegexData();
-
-            //aa(bb)+aa
-            //aa(1+aa
-            //bb
             regexdata.newRegex(idCounter, "", currentId);
             foreach (char c in regex.ToCharArray())
             {
@@ -27,10 +33,12 @@ namespace FormalMethods
                         idCounter++; 
                         regexdata.newRegex(idCounter, "", currentId);
                         regexdata.addLetter(currentId,  idCounter + "(");
-                        currentId = idCounter; 
+                        currentId = idCounter;
+                        Ocounter++; 
                         break;
                     case ')': //Last
-                        currentId = regexdata.getTopLayer(currentId); 
+                        currentId = regexdata.getTopLayer(currentId);
+                        Ccounter++;
                         break;                   
                     default: //no special character detected
                         regexdata.addLetter(currentId, c + "");
@@ -43,11 +51,15 @@ namespace FormalMethods
                        
                 }
             }
-            //regexdata.regexList.Sort();
-            regexdata.startThompson(); 
+            if(Ocounter != Ccounter)
+            {
+                return false; //bad regex
+            }
+           
+            regexdata.startThompson();
+            return true; 
         }
     }
 }
 
-// (ab(cd)*)+ aabba; 
-// aabbb* 
+

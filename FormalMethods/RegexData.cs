@@ -9,13 +9,11 @@ namespace FormalMethods
     {
        
         public List <Regex> regexList;
-        public List<string> captureList;
         public string Alphabet;
         public Thompson Thompson; 
         public RegexData()
         {
             this.regexList = new List<Regex>();
-            this.captureList = new List<string>();
             this.Alphabet = ""; 
         }
 
@@ -65,7 +63,7 @@ namespace FormalMethods
                 int begin2 = begin;
                 int end2 = 0; 
                 string before = "";
-                bool last = false;
+                
                 for (int i =0; i < or.Length; i++)
                 {
                     if(i >= (or.Length- 1))
@@ -86,14 +84,14 @@ namespace FormalMethods
                             }           
                             list = Thompson.star(begin2, end2, list);
                             int newEnd = list; 
-                            //begin2 = list; 
+                          
                             if (end2 > 0)
                             {
-                                list = checkCap(before, list - 1, list, list);
+                                list = checkCap(before, list - 2, list-1, list);
                             }
                             else
                             {
-                                list = checkCap(before, list - 2, list - 1, list);
+                                list = checkCap(before, list - 3, list - 2, list);
                             }
                             begin2 = newEnd;                          
                             before = "";
@@ -108,7 +106,7 @@ namespace FormalMethods
                             }
                             list = Thompson.plus(begin2, end2, list);
                             int newEnd2 = list;
-                            //begin2 = list; 
+                         
                             if (end2 > 0)
                             {
                                 list = checkCap(before, list - 1, list, list);
@@ -121,6 +119,7 @@ namespace FormalMethods
                             before = "";
                             break;
                         case '.':
+                            // Do nothing
                             break;
                         default:
                             before += or[i];
@@ -139,12 +138,11 @@ namespace FormalMethods
 
         public int printLetters(string before, int begin, int end, int list, bool affector)
         {
-            int length = before.Length; 
+             
             if (before.EndsWith('(') && before.Length > 2)
             {
                 if (before.Length > 2)
                 {
-                    //list = Thompson.epsilon(begin, list); 
                     list = Thompson.terminaal(begin, list, before[0]);
                     for (int i = 1; i < before.Length - 2; i++)
                     {
@@ -157,29 +155,61 @@ namespace FormalMethods
             }
             else if(before.Length > 1 && !before.EndsWith('('))
             {
-                list = Thompson.terminaal(begin, list, before[0]);
-                for (int i = 1; i < before.Length - 2; i++)
+ 
+                if (affector)
                 {
-                    list = Thompson.terminaal(list, list, before[i]);
+                    if (before.Length <= 2)
+                    {
+                        
+                        if (end > 0 && before.Length > 1)
+                        {
+                            Thompson.terminaal(begin, end, before[0]);
+                        }
+                        else if (before.Length > 1)
+                        {
+                            list = Thompson.terminaal(begin, list, before[0]);
+                        }
+                    }
+                    else
+                    {
+                        list = Thompson.terminaal(begin, list, before[0]);
+                        for (int i = 1; i < before.Length - 2; i++)
+                        {
+                            list = Thompson.terminaal(list, list, before[i]);
+                        }
+                        if (end > 0 && before.Length > 1)
+                        {
+                            Thompson.terminaal(list, end, before[before.Length - 2]);
+                        }
+                        else if (before.Length > 1)
+                        {
+                            list = Thompson.terminaal(list, list, before[before.Length - 2]);
+                        }
+                    }
                 }
-                if (end > 0 && before.Length > 1)
+                else
                 {
-                    Thompson.terminaal(list, end, before[before.Length - 1]);
+                    list = Thompson.terminaal(begin, list, before[0]);
+                    for (int i = 1; i < before.Length - 1; i++)
+                    {
+                        list = Thompson.terminaal(list, list, before[i]);
+                    }
+                    if (end > 0 && before.Length > 1)
+                    {
+                        Thompson.terminaal(list, end, before[before.Length - 1]);
+                    }
+                    else if (before.Length > 1)
+                    {
+                        list = Thompson.terminaal(list, list, before[before.Length - 1]);
+                    }
                 }
-                else if(before.Length > 1) 
-                {
-                    list = Thompson.terminaal(list, list + 1, before[before.Length - 1]);
-                }
-                
+
+               
+
             }
             else if (!affector)
             {
-                //Thompson.epsilon(begin, list);
                 Thompson.terminaal(begin, end, before[0]);
-                //list = Thompson.terminaal(list, list, before[0]);
-
-                //Thompson.epsilon(list, end); 
-                
             }
 
             return list; 

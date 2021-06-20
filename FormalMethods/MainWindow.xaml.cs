@@ -26,15 +26,26 @@ namespace FormalMethods
 
         public MainWindow()
         {
-            /*Input = new List<UserControl>();
+            Input = new List<UserControl>();
             InitializeComponent();
             DispatcherTimer time = new DispatcherTimer();
             time.Tick += new EventHandler(Timer_tick);
             time.Interval = new TimeSpan(0, 0, 0, 0, 100);
-            time.Start();*/
-            
+            time.Start();
+
             RegexParser regexParser = new RegexParser();
-            regexParser.ParseRegex("a+a|a(a|bc(ab)*)*ab"); 
+            if (!regexParser.ParseRegex("a+a|a%(a|bc(ab*))*ab"))
+            {
+                this.Close();
+            }
+
+
+
+            //regexParser.ParseRegex("(abbaa)*");
+            //regexParser.ParseRegex("aa|bb|ccd*c");
+            //a
+            //regexParser.ParseRegex("abbb");
+            //regexParser.ParseRegex("(ab)*|(bc)+");
 
 
 
@@ -104,7 +115,7 @@ namespace FormalMethods
             grapher.CreateGraph(automata, "test");
 
 
-
+*/
 
         }
 
@@ -133,10 +144,10 @@ namespace FormalMethods
                 AutomataButton.Visibility = Visibility.Visible;
 
 
-            }*/
+            }
 
 
-            
+
         }
 
         private void RegexButton_Click(object sender, RoutedEventArgs e)

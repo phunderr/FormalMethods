@@ -31,21 +31,21 @@ namespace FormalMethods
         {
             var graph = new DotGraph(name, true);
             List<DotNode> dotNodes = new List<DotNode>();
-            foreach (var node in automata.States)
+
+
+            foreach (State node in automata.States)
             {
                 DotNode graphnode;
-                graphnode = new DotNode(node)
+                graphnode = new DotNode(node.ToString())
                 {
                     Shape = DotNodeShape.Circle,
-                    Label = node,
+                    Label = node.ToString(),
                     FillColor = Color.Coral,
                     FontColor = Color.Black,
                     Style = DotNodeStyle.Solid,
                     Width = 0.5f,
                     Height = 0.5f
                 };
-
-
 
 
                 dotNodes.Add(graphnode);
@@ -56,19 +56,23 @@ namespace FormalMethods
 
 
 
-            foreach (var node in dotNodes)
+            foreach (DotNode node in dotNodes)
             {
-                if (automata.StartStates.Contains(node.Identifier))
+                if (automata.StartStates.Contains(new State(node.Identifier)))
                 {
                     node.FillColor = Color.LawnGreen;
+                    node.Style = DotNodeStyle.Filled;
+                }
+                if (node.Identifier == "{}")
+                {
+                    node.FillColor = Color.White;
                     node.Style = DotNodeStyle.Filled;
                 }
 
 
 
-                if (automata.FinalStates.Contains(node.Identifier))
+                if (automata.FinalStates.Contains(new State(node.Identifier)))
                 {
-                    node.FillColor = Color.LightBlue;
                     node.Shape = DotNodeShape.DoubleCircle;
                     node.Style = DotNodeStyle.Filled;
                 }
@@ -78,22 +82,23 @@ namespace FormalMethods
 
 
 
-            foreach (var trans in automata.Transitions)
+            foreach (Transition<string> trans in automata.Transitions)
             {
 
 
 
 
-                var myEdge = new DotEdge(trans.FromState, trans.ToState)
+                var myEdge = new DotEdge(trans.from.ToString(), trans.to.ToString())
                 {
                     ArrowHead = DotEdgeArrowType.Vee,
                     ArrowTail = DotEdgeArrowType.Diamond,
                     Color = Color.Black,
                     FontColor = Color.Black,
-                    Label = trans.Symbol.ToString()
+                    Label = trans.symbol.ToString()
                 };
                 graph.Elements.Add(myEdge);
             }
+
 
 
 

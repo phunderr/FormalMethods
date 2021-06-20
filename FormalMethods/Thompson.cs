@@ -9,13 +9,15 @@ namespace FormalMethods
         
         private Automata<string> automata;
         public int startState;
-        public int finalState; 
+        public int finalState;
+        public bool endCheck; 
         public Thompson(char[] alphabet)
         {
             
             automata = new Automata<string>(alphabet);
             this.startState = 0;
-            this.finalState = 0; 
+            this.finalState = 0;
+            this.endCheck = false; 
         }
         
         public int terminaal(int begin, int list, char a)
@@ -24,8 +26,12 @@ namespace FormalMethods
             {
                 this.startState = begin; 
             }
+            if(!endCheck)
+            {
+                this.finalState = list + 1;
+            }
             automata.AddTransition(new Transition<string>(new State(begin  + ""), a, new State((list + 1) + "")));
-            this.finalState = list + 1; 
+            
             return list+ 1; 
         }
 
@@ -36,7 +42,7 @@ namespace FormalMethods
                 this.startState = list1;
             }
             automata.AddTransition(new Transition<string>(new State(list1 + ""), 'ε', new State( list2 + "")));
-            this.finalState = list2; 
+            
             return list2; 
         }
 
@@ -80,22 +86,16 @@ namespace FormalMethods
         {
 
             list = beginEps(begin, list);
+            list = epsilon(list, list + 1);
             int list2 = list;
 
-            list = endEps(list + 1, end);
+            list = epsilon(list + 1, list + 2); 
+            list = endEps(list, end);
+            int list3 = list;
 
-            
-            if (end <= 0)
-            {
-                epsilon(begin, list);
-                epsilon(list - 1, list2);
-            }
-            else
-            {
-                epsilon(begin, end);
-                epsilon(list, list2);
-            }
-
+            epsilon(list2 - 1, list);
+            epsilon(list - 1, list2);
+           
 
             return list;
         }
@@ -111,8 +111,15 @@ namespace FormalMethods
         {
             if (end <= 0)
             {
-                list++; 
+                list++;
+                 
                 epsilon(list - 1, list);
+                if(this.finalState <= 0)
+                {
+                    this.endCheck = true;
+                    this.finalState = list;
+                }
+                 
                 return list; 
             }
             else
@@ -131,8 +138,8 @@ namespace FormalMethods
 
         public void finishThompson()
         {
-            automata.DefineAsStartState(this.startState + "");
-            automata.DefineAsFinalState(this.finalState + ""); 
+            automata.DefineAsStartState(new State(this.startState + ""));
+            automata.DefineAsFinalState(new State(this.finalState + "")); 
 
         }
         public Automata<string> GetAutomata()
